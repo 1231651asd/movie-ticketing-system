@@ -76,17 +76,15 @@ export default {
             }
         }
     },
-    // D:\movie-ticketing-system\movie-ticketing-system\src\analogData\user.json
-    // D:\movie-ticketing-system\movie-ticketing-system\src\views\HomeView.vue
     methods: {
         handleLogin() {
             if (!this.isRegister && this.validateLoginForm()) {
                 // axios({
                 //     method: 'get',
-                //     url: './user.json'
+                //     url: '/user.json'
                 // }).then((result) => {
                 //     console.log(result.data);
-                //     this.$router.push('/MovieHome');
+                // this.$router.push('/MovieHome');
                 // }).catch((error) => {
                 //     console.error('请求失败：', error);
                 // });

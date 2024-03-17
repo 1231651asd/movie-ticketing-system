@@ -9,13 +9,10 @@
             <div class="hot-title">
                 <h3>正在热映</h3>
             </div>
-            <div class="more">
-                <router-link to="/MovieHome/Movie" class="more-link">更多>></router-link>
-            </div>
         </div>
     </div>
     <div class="movie-container">
-        <div class="movie" v-for="(item, index) in movieData" :key="index">
+        <div class="movie" v-for="(item, index) in movieData" :key="index" @click="goToCiname()">
             <div class="movie-image">
                 <el-image style="width: 300px; height: 300px" :src="item.imageUrl" />
             </div>
@@ -24,6 +21,7 @@
             </div>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -60,6 +58,11 @@ export default {
                 },
 
             ]
+        }
+    },
+    methods: {
+        goToCiname() {
+            this.$router.push('/MovieHome/Cinema');
         }
     }
 }

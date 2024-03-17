@@ -4,10 +4,6 @@
             <el-tab-pane label="首页" name="Home">
                 <component :is='activeTab'></component>
             </el-tab-pane>
-            <el-tab-pane label="影片" name="Movie">
-                <component :is='activeTab'></component>
-
-            </el-tab-pane>
             <el-tab-pane label="影院" name="Cinema">
                 <component :is='activeTab'></component>
             </el-tab-pane>
@@ -18,7 +14,6 @@
 <script>
 import '@/assets/MovieHome.css'
 import Home from '../components/Home.vue';
-import Movie from '../components/Movie.vue';
 import Cinema from '../components/Cinema.vue';
 
 export default {
@@ -30,7 +25,6 @@ export default {
     },
     components: {
         Home,
-        Movie,
         Cinema
     },
     methods: {
