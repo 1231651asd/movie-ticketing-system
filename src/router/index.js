@@ -4,7 +4,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      //首页
+      //登录注册页面
       path: '/',
       name: 'HomeView',
       component: HomeView
@@ -16,28 +16,28 @@ const router = createRouter({
       component: () => import('../views/AdminHomeView.vue')
     },
     {
-      // 电影首页
-      path: '/MovieHome',
-      name: 'MovieHome',
-      component: () => import('../components/MovieHome.vue')
-    },
-    {
       // 首页
-      path: '/MovieHome/Home',
+      path: '/Home',
       name: 'Home',
       component: () => import('../components/Home.vue')
     },
     {
-      // 电影
-      path: '/MovieHome/Movie',
+      // 影院
+      path: '/Home/Cinema',
+      name: 'Cinema',
+      component: () => import('../components/Cinema.vue')
+    },
+    {
+      // 电影详细信息
+      path: '/Home/Cinema/Movie',
       name: 'Movie',
       component: () => import('../components/Movie.vue')
     },
     {
-      // 影院
-      path: '/MovieHome/Cinema',
-      name: 'Cinema',
-      component: () => import('../components/Cinema.vue')
+      // 买票页面
+      path: '/Home/Cinema/Movie/BuyTickets',
+      name: 'BuyTickets',
+      component: () => import('../components/BuyTickets.vue')
     }
   ]
 })

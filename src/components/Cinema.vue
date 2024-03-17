@@ -5,7 +5,7 @@
             <h2>{{ item.cinemaName }}</h2>
             <p class="address">地址：{{ item.cinemaAddress }}</p>
             <p class="phone">电话：{{ item.cinemaPhone }}</p>
-            <p>影院服务: 改签、3D眼镜免押金、免费WIFI、儿童优惠</p>
+            <p class="service">影院服务: 改签、3D眼镜免押金、免费WIFI、儿童优惠</p>
         </div>
     </div>
 </template>
@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         GoMovieHome() {
-            this.$router.push('/MovieHome')
+            this.$router.push('/Home/Cinema/Movie')
         }
     }
 }

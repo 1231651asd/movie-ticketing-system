@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="movie-container">
-        <div class="movie" v-for="(item, index) in movieData" :key="index" @click="goToCiname()">
+        <div class="movie" v-for="(item, index) in movieData" :key="index" @click="goToCiname">
             <div class="movie-image">
                 <el-image style="width: 300px; height: 300px" :src="item.imageUrl" />
             </div>
@@ -62,7 +62,7 @@ export default {
     },
     methods: {
         goToCiname() {
-            this.$router.push('/MovieHome/Cinema');
+            this.$router.push('/Home/Cinema');
         }
     }
 }
