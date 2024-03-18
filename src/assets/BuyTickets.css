@@ -1,0 +1,70 @@
+body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: #EFF3F5;
+}
+
+.container {
+    position: relative;
+    width: 90%;
+    height: 650px;
+    background-color: white;
+    margin: 0 auto;
+    margin-top: 30px;
+}
+
+.movie {
+    position: absolute;
+    width: 232px;
+    height: 500px;
+    margin-top: 80px;
+    margin-left: 50px;
+}
+
+.movie p {
+    margin-top: 20px;
+    margin-left: 15px;
+    font-size: 17px;
+    font-weight: 700;
+    color: blue;
+}
+
+.seat h1 {
+    position: absolute;
+    right: 35%;
+    top: 5%;
+    color: gray;
+}
+
+.seat .buy {
+    position: absolute;
+    right: 50%;
+    bottom: 5%;
+}
+
+.seats {
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    top: 20%;
+    left: 25%;
+}
+
+.seats span {
+    width: 50px;
+    height: 50px;
+    margin: 0 15px;
+    margin-top: 20px;
+    cursor: pointer;
+    display: inline-block;
+    background-size: cover;
+}
+
+.icon-selected {
+    background-image: url('/yes.png');
+}
+
+.icon-normal {
+    background-image: url('/no.png');
+}
