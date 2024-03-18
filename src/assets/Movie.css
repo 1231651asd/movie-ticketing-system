@@ -37,3 +37,21 @@ body {
     font-size: 20px;
     font-weight: 700;
 }
+
+.main {
+    display: flex;
+    width: 90%;
+    height: 300px;
+    margin: 0 auto;
+    margin-top: 30px;
+    background-color: white;
+}
+
+.introduce h2 {
+    margin-left: 20px;
+}
+
+.introduce p {
+    margin: 0 20px;
+    font-size: 20px;
+}

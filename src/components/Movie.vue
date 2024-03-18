@@ -8,6 +8,17 @@
             <el-button type="danger" round @click="GoBuyTickets">特惠购票</el-button>
         </div>
     </div>
+    <div class="main">
+        <div class="introduce">
+            <h2>剧情介绍：</h2>
+            <p>{{ MovieData.introduce }}</p>
+            <div class="performer">
+                <h2>演员：</h2>
+                <p>{{ MovieData.performer }}</p>
+            </div>
+        </div>
+
+    </div>
 </template>
 <script>
 import '@/assets/Movie.css'
@@ -18,7 +29,9 @@ export default {
                 imageUrl: 'https://p0.pipi.cn/mmdb/54ecde9a2ffc7e21f0ecd8bb48ec78326e683.jpg?imageView2/1/w/464/h/644',
                 MovieName: '功夫熊猫4',
                 type: '动作 冒险 动画',
-                ReleaseTime: '2024-3-16'
+                ReleaseTime: '2024-3-16',
+                introduce: '爷青回！《功夫熊猫》新作来袭！阿宝“升职”同时，新仇旧敌集结现身，大龙竟起死回生？狐狸小真身份神秘，到底有何心机？ 阿宝被师傅要求选出下一任神龙大侠，正苦恼如何应对时，阿宝昔日的手下败将们却纷纷重出江湖！身世神秘的狐狸小真告诉阿宝，这一切的幕后黑手正是邪恶女巫魅影妖后！阿宝能否打败魅影妖后，昔日敌人又为何再次现身？这次又会发生怎样的搞笑趣事？赶快带上亲朋好友，一起到影院寻找真相吧～',
+                performer: '杰克·布莱克 黄渤 奥卡菲娜 杨幂'
             }
         }
     },
