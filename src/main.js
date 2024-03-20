@@ -13,4 +13,10 @@ app.use(ElementPlus)
 app.use(createPinia())
 app.use(router)
 
+import * as ElIcon from '@element-plus/icons-vue'
+
+Object.keys(ElIcon).forEach((key) => {
+    app.component(key, ElIcon[key])
+})
+
 app.mount('#app')
