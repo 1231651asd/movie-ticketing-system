@@ -8,7 +8,7 @@
         </div>
         <div class="seat">
             <h1>银幕中央</h1>
-            <el-button type="danger" plain class="buy">立即购买</el-button>
+            <el-button type="danger" plain class="buy" @click="GoHome">立即购买</el-button>
             <div class="seats">
                 <span v-for="seat in seatData" :key="seat.seatNumber" :class="{ 'selected': seat.selected }"
                     @click="toggleSeatSelection(seat)">
@@ -99,6 +99,9 @@ export default {
     methods: {
         toggleSeatSelection(seat) {
             seat.selected = !seat.selected;
+        },
+        GoHome() {
+            this.$router.push('/Home')
         }
     }
 }

@@ -1,5 +1,10 @@
 <template>
     <div class="container">
+        <el-backtop :right="30" :bottom="100" />
+        <div class="header">
+            <div class="user">您好，<span @click="GoUserInfo">{{ UserInfo.name }}</span></div>
+            <div class="loginOut" @click="loginOut">退出登录</div>
+        </div>
         <el-carousel :interval="3000" type="card" height="200px">
             <el-carousel-item v-for="(item, index) in ImageData" :key="index">
                 <img :src="item" alt="carousel-image">
@@ -57,12 +62,21 @@ export default {
                     title: '你好世界'
                 },
 
-            ]
+            ],
+            UserInfo: {
+                name: 'Tom'
+            }
         }
     },
     methods: {
         goToCiname() {
             this.$router.push('/Home/Cinema');
+        },
+        loginOut() {
+            this.$router.push('/')
+        },
+        GoUserInfo() {
+            this.$router.push('/UserInfo')
         }
     }
 }

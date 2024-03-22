@@ -38,6 +38,12 @@ const router = createRouter({
       path: '/Home/Cinema/Movie/BuyTickets',
       name: 'BuyTickets',
       component: () => import('../components/BuyTickets.vue')
+    },
+    {
+      // 用户信息页面
+      path: '/UserInfo',
+      name: 'UserInfo',
+      component: () => import('../components/UserInfo.vue')
     }
   ]
 })
