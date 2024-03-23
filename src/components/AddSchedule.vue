@@ -26,10 +26,8 @@
         <el-dialog v-model="dialogFormVisible" title="添加电影" width="500">
             <el-form :model="form">
                 <el-form-item label="上传海报" :label-width="formLabelWidth">
-                    <el-upload class="upload-demo" action="/uploadUrl" :on-success="handleUploadSuccess" :limit="1"
-                        :file-list="fileList" list-type="picture">
-                        <el-button size="small" type="primary">点击上传</el-button>
-                    </el-upload>
+                    <input type="file" @change="handleFileUpload" accept="image/*">
+                    <img :src="form.ImageUrl" style="width: 160px;height: 235px;" v-if="form.ImageUrl">
                 </el-form-item>
                 <el-form-item label="影城" :label-width="formLabelWidth">
                     <el-input v-model="form.Cinema" autocomplete="off" />
@@ -72,11 +70,10 @@
         <el-dialog v-model="EditDialogFormVisible" title="电影信息编辑" width="500">
             <el-form :model="form">
                 <el-form-item label="上传海报" :label-width="formLabelWidth">
-                    <el-upload class="upload-demo" action="/uploadUrl" :on-success="handleUploadSuccess" :limit="1"
-                        :file-list="fileList" list-type="picture">
-                        <el-button size="small" type="primary">点击上传</el-button>
-                    </el-upload>
+                    <input type="file" @change="handleFileUpload" accept="image/*">
+                    <img :src="form.ImageUrl" style="width: 160px;height: 235px;" v-if="form.ImageUrl">
                 </el-form-item>
+
                 <el-form-item label="影城" :label-width="formLabelWidth">
                     <el-input v-model="form.Cinema" autocomplete="off" />
                 </el-form-item>
@@ -127,6 +124,7 @@ export default {
             EditDialogFormVisible: false,
             dialogFormVisible: false,
             form: {
+                ImageUrl: '',
                 Cinema: '',
                 MovieName: '',
                 Introduce: '',
@@ -202,6 +200,7 @@ export default {
         onAddItem() {
             this.dialogFormVisible = true;
             this.form = {
+                ImageUrl: '',
                 Cinema: '',
                 MovieName: '',
                 Introduce: '',
@@ -229,9 +228,24 @@ export default {
             };
             ElMessage.success('添加电影成功');
         },
-        handleUploadSuccess(response, file, fileList) {
-            this.fileList = fileList;
-        }
+        updateMovie() {
+            const index = this.tableData.findIndex(item => item.MovieName === this.form.MovieName);
+
+            // 更新电影信息
+            if (index !== -1) {
+                this.tableData[index] = { ...this.form };
+                this.EditDialogFormVisible = false;
+                ElMessage.success('更新电影信息成功');
+            } else {
+                ElMessage.error('未找到要更新的电影');
+            }
+        },
+        handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                this.form.ImageUrl = URL.createObjectURL(file);
+            }
+        },
     },
 };
 </script>
