@@ -44,6 +44,11 @@ const router = createRouter({
       path: '/UserInfo',
       name: 'UserInfo',
       component: () => import('../components/UserInfo.vue')
+    }, {
+      // 选择时间页面
+      path: '/ChooseTime',
+      name: 'ChooseTime',
+      component: () => import('../components/ChooseTime.vue')
     }
   ]
 })

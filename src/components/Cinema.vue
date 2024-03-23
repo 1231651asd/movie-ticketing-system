@@ -38,7 +38,7 @@ export default {
     },
     methods: {
         GoMovieHome() {
-            this.$router.push('/Home/Cinema/Movie')
+            this.$router.push('/ChooseTime')
         }
     }
 }
