@@ -1,21 +1,36 @@
 <template>
+    <div class="container">
+        <div class="aside">
+            <h2>导航</h2>
+            <div class="order" @click="changeComponents('OrderingInformation')">订单信息</div>
+            <div class="password" @click="changeComponents('UserModifyPassword')">修改密码</div>
+        </div>
+        <div class="right">
+            <component :is="currentComponent"></component>
+        </div>
+    </div>
 
-    <el-tabs :tab-position="tabPosition" style="height: 200px" class="demo-tabs">
-        <el-tab-pane label="订单信息">User</el-tab-pane>
-        <el-tab-pane label="修改密码">Config</el-tab-pane>
-        <el-tab-pane label="退出登录">Role</el-tab-pane>
-
-    </el-tabs>
 </template>
 
 <script>
 import '@/assets/UserInfo.css'
-
+import OrderingInformation from '@/components/OrderingInformation.vue'
+import UserModifyPassword from '@/components/UserModifyPassword.vue'
 export default {
     data() {
         return {
-            tabPosition: 'left'
+            currentComponent: 'OrderingInformation'
+
         }
+    },
+    methods: {
+        changeComponents(component) {
+            this.currentComponent = component
+        }
+    },
+    components: {
+        OrderingInformation,
+        UserModifyPassword
     }
 }
 </script>
