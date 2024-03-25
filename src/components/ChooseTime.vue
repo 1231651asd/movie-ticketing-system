@@ -55,7 +55,7 @@ export default {
     },
     methods: {
         GoHomeMovie() {
-            this.$router.push('/Home/Cinema/Movie')
+            this.$router.push('/Movie')
         }
     }
 }

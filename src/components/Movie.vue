@@ -37,7 +37,7 @@ export default {
     },
     methods: {
         GoBuyTickets() {
-            this.$router.push('/Home/Cinema/Movie/BuyTickets')
+            this.$router.push('/BuyTickets')
         }
     }
 }

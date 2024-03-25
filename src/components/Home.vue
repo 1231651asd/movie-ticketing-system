@@ -69,7 +69,7 @@ export default {
     },
     methods: {
         goToCiname() {
-            this.$router.push('/Home/Cinema');
+            this.$router.push('/Cinema');
         },
         loginOut() {
             this.$router.push('/')
