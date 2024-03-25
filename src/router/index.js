@@ -23,19 +23,19 @@ const router = createRouter({
     },
     {
       // 影院
-      path: '/Home/Cinema',
+      path: '/Cinema',
       name: 'Cinema',
       component: () => import('../components/Cinema.vue')
     },
     {
       // 电影详细信息
-      path: '/Home/Cinema/Movie',
+      path: '/Movie',
       name: 'Movie',
       component: () => import('../components/Movie.vue')
     },
     {
       // 买票页面
-      path: '/Home/Cinema/Movie/BuyTickets',
+      path: '/BuyTickets',
       name: 'BuyTickets',
       component: () => import('../components/BuyTickets.vue')
     },
