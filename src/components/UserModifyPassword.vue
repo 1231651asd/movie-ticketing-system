@@ -22,7 +22,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .UserModifyPassword {
     display: flex;
     flex-direction: column;

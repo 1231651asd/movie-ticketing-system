@@ -21,7 +21,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .centered-container {
     display: flex;
     flex-direction: column;

@@ -1,27 +1,27 @@
 <template>
-    <div class="header">
-        <img :src="MovieData.imageUrl" style="width: 232px; height: 300px">
-        <div class="movie-info">
-            <h3>{{ MovieData.MovieName }}</h3>
-            <p class="type">{{ MovieData.type }}</p>
-            <p class="release-time">{{ MovieData.ReleaseTime }}&nbsp;&nbsp;中国大陆上映</p>
-            <el-button type="danger" round @click="GoBuyTickets">特惠购票</el-button>
-        </div>
-    </div>
-    <div class="main">
-        <div class="introduce">
-            <h2>剧情介绍：</h2>
-            <p>{{ MovieData.introduce }}</p>
-            <div class="performer">
-                <h2>演员：</h2>
-                <p>{{ MovieData.performer }}</p>
+    <div class="container">
+        <div class="header">
+            <img :src="MovieData.imageUrl" style="width: 232px; height: 300px">
+            <div class="movie-info">
+                <h3>{{ MovieData.MovieName }}</h3>
+                <p class="type">{{ MovieData.type }}</p>
+                <p class="release-time">{{ MovieData.ReleaseTime }}&nbsp;&nbsp;中国大陆上映</p>
+                <el-button type="danger" round @click="GoBuyTickets">特惠购票</el-button>
             </div>
         </div>
-
+        <div class="main">
+            <div class="introduce">
+                <h2>剧情介绍：</h2>
+                <p>{{ MovieData.introduce }}</p>
+                <div class="performer">
+                    <h2>演员：</h2>
+                    <p>{{ MovieData.performer }}</p>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 <script>
-import '@/assets/Movie.css'
 export default {
     data() {
         return {
@@ -42,3 +42,66 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.container {
+    background-color: #3C305A;
+    height: 100vh;
+    position: fixed;
+}
+
+
+.header {
+    display: flex;
+    width: 90%;
+    height: 300px;
+    margin: 0 auto;
+    margin-top: 30px;
+    background-color: #a6a9ad;
+}
+
+.header img {
+    margin-left: 20px;
+}
+
+.header .movie-info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    margin-left: 50px;
+}
+
+.header h3 {
+    font-size: 50px;
+    margin: 0 auto;
+}
+
+.header .type {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.header .release-time {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.main {
+    display: flex;
+    width: 90%;
+    height: 300px;
+    margin: 0 auto;
+    margin-top: 30px;
+    background-color: white;
+}
+
+.introduce h2 {
+    margin-left: 20px;
+}
+
+.introduce p {
+    margin: 0 20px;
+    font-size: 20px;
+}
+</style>

@@ -250,7 +250,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .upload-demo {
     display: inline-block;
     margin-bottom: 20px;
