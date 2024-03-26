@@ -11,34 +11,44 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
     data() {
         return {
-            CinemaData: [
-                {
-                    cinemaUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    cinemaName: '万达影城',
-                    cinemaAddress: '江夏区杨桥湖大道8号',
-                    cinemaPhone: '123456789'
-                },
-                {
-                    cinemaUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    cinemaName: '新世纪影城',
-                    cinemaAddress: '江夏区杨桥湖大道8号',
-                    cinemaPhone: '123456789'
-
-
-                }
-            ]
-
-
+            CinemaData: []
         }
     },
     methods: {
         GoMovieHome() {
             this.$router.push('/ChooseTime')
         }
+    },
+    mounted() {
+        const cinemaIdArrString = this.$route.query.cinemaIdArr;
+        const movieId = this.$route.query.movieId
+        const cinemaIdArr = []
+        for (let i = 0; i < cinemaIdArrString.length; ++i) {
+            cinemaIdArr.push(Number(cinemaIdArrString[i]))
+        }
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/movie/cinemaList/' + movieId,
+            params: {
+                movieId: movieId,
+            }
+        }).then((res) => {
+            let cinemaData = res.data.data
+            for (let i = 0; i < cinemaData.length; ++i) {
+                this.CinemaData.push({
+                    cinemaUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+                    cinemaName: cinemaData[i].cinemaName,
+                    cinemaAddress: cinemaData[i].cinemaAddress,
+                    cinemaPhone: '123456789'
+
+                })
+            }
+        })
     }
 }
 </script>

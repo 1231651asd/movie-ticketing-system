@@ -59,6 +59,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -77,6 +79,18 @@ export default {
     methods: {
         handleLogin() {
             if (!this.isRegister && this.validateLoginForm()) {
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:8080/user/login',
+                    data: {
+                        userName: this.loginForm.account,
+                        userPwd: this.loginForm.password
+                    }
+                }).then(() => {
+                    console.log(userName)
+                }).catch((err) => {
+                    console.error(err)
+                })
             }
         },
 

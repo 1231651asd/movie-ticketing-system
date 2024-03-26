@@ -19,8 +19,6 @@
 </template>
 
 <script>
-
-// import '@/assets/ChooseTime.css'
 export default {
     data() {
         return {

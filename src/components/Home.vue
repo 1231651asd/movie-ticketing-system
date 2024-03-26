@@ -15,61 +15,52 @@
                 <h3>正在热映</h3>
             </div>
         </div>
-    </div>
-    <div class="movie-container">
-        <div class="movie" v-for="(item, index) in movieData" :key="index" @click="goToCiname">
-            <div class="movie-image">
-                <el-image style="width: 300px; height: 300px" :src="item.imageUrl" />
-            </div>
-            <div class="movie-title">
-                {{ item.title }}
+        <div class="movie-container">
+            <div class="movie" v-for="(item, index) in movieData" :key="index" @click="goToCiname(item.movieId)">
+                <div class="movie-image">
+                    <el-image style="width: 300px; height: 300px" :src="item.imageUrl" />
+                </div>
+                <div class="movie-title">
+                    {{ item.title }}
+                </div>
             </div>
         </div>
     </div>
 
+
 </template>
 
 <script>
+import axios from 'axios';
 
 export default {
     data() {
         return {
             ImageData: ['/1.jpg', '/2.jpg', '/3.jpg', '/4.jpg', '/5.jpg', '/6.jpg'],
-            movieData: [
-                {
-                    imageUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    title: '你好世界'
-                },
-                {
-                    imageUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    title: '你好世界'
-                },
-                {
-                    imageUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    title: '你好世界'
-                },
-                {
-                    imageUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    title: '你好世界'
-                },
-                {
-                    imageUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    title: '你好世界'
-                },
-                {
-                    imageUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                    title: '你好世界'
-                },
-
-            ],
+            movieData: [],
             UserInfo: {
                 name: 'Tom'
             }
         }
     },
     methods: {
-        goToCiname() {
-            this.$router.push('/Cinema');
+        goToCiname(movieId) {
+            axios({
+                method: 'get',
+                url: 'http://localhost:8080/movie/cinemaList/' + movieId,
+                params: {
+                    movieId: movieId
+                }
+            }).then((res) => {
+                let CinemaData = res.data.data
+                let cinemaIdArr = []
+                for (let i = 0; i < CinemaData.length; ++i) {
+                    cinemaIdArr.push(CinemaData[i].cinemaId)
+                }
+                this.$router.push({ path: '/Cinema', query: { cinemaIdArr: cinemaIdArr, movieId } })
+            }).catch((err) => {
+                console.error(err)
+            })
         },
         loginOut() {
             this.$router.push('/')
@@ -77,6 +68,23 @@ export default {
         GoUserInfo() {
             this.$router.push('/UserInfo')
         }
+    },
+    mounted() {
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/movie/movieList/6'
+        }).then((res) => {
+            let Data = res.data.data
+            for (let i = 0; i < Data.length; ++i) {
+                this.movieData.push({
+                    movieId: Data[i].movieId,
+                    imageUrl: Data[i].moviePicture,
+                    title: Data[i].movieCnName
+                });
+            }
+        }).catch((err) => {
+            console.error(err)
+        })
     }
 }
 </script>
@@ -115,7 +123,7 @@ body {
 
 
 .movie-container {
-    width: 90%;
+    width: 100%;
     height: 100%;
     background-color: #d5c4c8;
     margin: 0 auto;
