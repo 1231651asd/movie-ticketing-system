@@ -9,14 +9,19 @@
                 <form @submit.prevent="handleLogin">
                     <div class="form-group">
                         <label for="username">帐号:</label>
-                        <input required="" name="account" id="account" type="text" v-model="loginForm.account">
+                        <input required="" name="account" id="account" type="text" v-model="loginForm.userName">
                     </div>
                     <div class="form-group">
                         <label for="password">密码:</label>
-                        <input required="" name="password" id="password" type="password" v-model="loginForm.password">
+                        <input required="" name="password" id="password" type="password" v-model="loginForm.userPwd">
+                    </div>
+                    <div class="captcha">
+                        <input v-model="loginForm.code" placeholder="请输入验证码" class="input1">
+                        <img :src="captchaSrc" />
+                        <!-- //@click="refreshCaptcha" -->
                     </div>
                     <div class="form-group">
-                        <input value="登录" type="submit">
+                        <input value="登录" type="submit" @click="handleLogin()">
                     </div>
                     <div class="form-group">
                         <input value="注册" type="button" @click="GoRegister">
@@ -64,10 +69,12 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            captchaSrc: '',
             isRegister: false,
             loginForm: {
-                account: '',
-                password: ''
+                userName: '',
+                userPwd: '',
+                code: ''
             },
             registerForm: {
                 account: '',
@@ -76,8 +83,11 @@ export default {
             }
         }
     },
+    mounted() {
+        this.fetchVerificationCode()
+    },
     methods: {
-        handleLogin() {
+in() {
             if (!this.isRegister && this.validateLoginForm()) {
                 axios({
                     method: 'post',
