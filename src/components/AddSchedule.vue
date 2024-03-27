@@ -4,10 +4,12 @@
         <el-table :data="tableData" style="width: 100%" max-height="250">
             <el-table-column prop="Cinema" label="影城" width="150" />
             <el-table-column prop="MovieName" label="电影名称" width="150" />
+            <el-table-column prop="Region" label="上映地区" width="150" />
             <el-table-column prop="ReleaseTime" label="上映时间" width="120" />
             <el-table-column prop="StartTime" label="开始时间" width="120" />
             <el-table-column prop="EndTime" label="结束时间" width="120" />
             <el-table-column prop="Room" label="影厅" width="120" />
+            <el-table-column prop="Type" label="类型" width="120" />
             <el-table-column prop="Performer" label="演员" width="120" />
             <el-table-column prop="Introduce" label="简介" width="6000" />
             <el-table-column fixed="right" label="Operations" width="120">
@@ -30,7 +32,16 @@
                     <img :src="form.ImageUrl" style="width: 160px;height: 235px;" v-if="form.ImageUrl">
                 </el-form-item>
                 <el-form-item label="影城" :label-width="formLabelWidth">
-                    <el-input v-model="form.Cinema" autocomplete="off" />
+                    <el-select v-model="form.Cinema" placeholder="请选择影城">
+                        <el-option v-for="item in CinemaOptions" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="上映地区" :label-width="formLabelWidth">
+                    <el-select v-model="form.Region" placeholder="请选择影城">
+                        <el-option v-for="item in RegionOptions" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="电影名称" :label-width="formLabelWidth">
                     <el-input v-model="form.MovieName" autocomplete="off" />
@@ -49,6 +60,12 @@
                 </el-form-item>
                 <el-form-item label="影厅" :label-width="formLabelWidth">
                     <el-input v-model="form.Room" autocomplete="off" />
+                </el-form-item>
+                <el-form-item label="电影类型" :label-width="formLabelWidth">
+                    <el-select v-model="form.Type" placeholder="请选择电影类型" multiple>
+                        <el-option v-for="item in TypeOptions" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="演员" :label-width="formLabelWidth">
                     <el-input v-model="form.Performer" style="width: 240px" />
@@ -73,9 +90,17 @@
                     <input type="file" @change="handleFileUpload" accept="image/*">
                     <img :src="form.ImageUrl" style="width: 160px;height: 235px;" v-if="form.ImageUrl">
                 </el-form-item>
-
                 <el-form-item label="影城" :label-width="formLabelWidth">
-                    <el-input v-model="form.Cinema" autocomplete="off" />
+                    <el-select v-model="form.Cinema" placeholder="请选择影城">
+                        <el-option v-for="item in CinemaOptions" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="上映地区" :label-width="formLabelWidth">
+                    <el-select v-model="form.Region" placeholder="请选择影城">
+                        <el-option v-for="item in RegionOptions" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="电影名称" :label-width="formLabelWidth">
                     <el-input v-model="form.MovieName" autocomplete="off" />
@@ -94,6 +119,12 @@
                 </el-form-item>
                 <el-form-item label="影厅" :label-width="formLabelWidth">
                     <el-input v-model="form.Room" autocomplete="off" />
+                </el-form-item>
+                <el-form-item label="电影类型" :label-width="formLabelWidth">
+                    <el-select v-model="form.Type" placeholder="请选择电影类型" multiple>
+                        <el-option v-for="item in TypeOptions" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="演员" :label-width="formLabelWidth">
                     <el-input v-model="form.Performer" style="width: 240px" />
@@ -126,45 +157,96 @@ export default {
             form: {
                 ImageUrl: '',
                 Cinema: '',
+                Region: '',
                 MovieName: '',
                 Introduce: '',
                 Performer: '',
                 ReleaseTime: '',
                 StartTime: '',
                 EndTime: '',
-                Room: ''
+                Room: '',
+                Type: ''
             },
             formLabelWidth: '140px',
+            CinemaOptions: [
+                { label: "中山奇幻电影院", value: "中山奇幻电影院" },
+                { label: "金逸影城中山石歧店", value: "金逸影城中山石歧店" },
+                { label: "博纳国际影城（中山IMAX店）", value: "博纳国际影城（中山IMAX店）" },
+                { label: "UME影城（中山古镇店）", value: "UME影城（中山古镇店）" },
+                { label: "中影100影城石歧店", value: "中影100影城石歧店" },
+                { label: "橙天嘉禾影城（利和店）", value: "橙天嘉禾影城（利和店）" },
+                { label: "珠影GCC影城（中山杜比全景声店）", value: "珠影GCC影城（中山杜比全景声店）" },
+                { label: "期遇·翼影城（东凤店）", value: "期遇·翼影城（东凤店）" },
+                { label: "中山IM电影城（南朗壹加壹店）", value: "中山IM电影城（南朗壹加壹店）" },
+                { label: "艺达国际影城（小榄杜比全景声店）", value: "艺达国际影城（小榄杜比全景声店）" },
+                { label: "中影天乐电影城（海州汇海城店）", value: "中影天乐电影城（海州汇海城店）" },
+                { label: "比高电影城（中山店）", value: "比高电影城（中山店）" },
+                { label: "大地影院（星宝时代店）", value: "大地影院（星宝时代店）" },
+                { label: "中影星艺影城（南朗车站店）", value: "中影星艺影城（南朗车站店）" },
+                { label: "中影太阳城影院（张家边店）", value: "中影太阳城影院（张家边店）" },
+                { label: "五月花电影城（棕榈彩虹商业中心店）", value: "五月花电影城（棕榈彩虹商业中心店）" },
+                { label: "高菲影城（中山万益广场店）", value: "高菲影城（中山万益广场店）" },
+                { label: "金逸影城（中山远洋城IMAX店）", value: "金逸影城（中山远洋城IMAX店）" },
+            ],
+            RegionOptions: [
+                { label: '中国大陆', value: '中国大陆' },
+                { label: '中国香港', value: '中国香港' },
+                { label: '中国台湾', value: '中国台湾' },
+                { label: '英国', value: '英国' },
+                { label: '法国', value: '法国' },
+                { label: '德国', value: '德国' },
+                { label: '意大利', value: '意大利' },
+                { label: '加拿大', value: '加拿大' },
+                { label: '澳大利亚', value: '澳大利亚' },
+                { label: '韩国', value: '韩国' },
+            ],
+            TypeOptions: [
+                { label: '动作', value: '动作' },
+                { label: '喜剧', value: '喜剧' },
+                { label: '爱情', value: '爱情' },
+                { label: '科幻', value: '科幻' },
+                { label: '恐怖', value: '恐怖' },
+                { label: '剧情', value: '剧情' },
+                { label: '动画', value: '动画' },
+                { label: '纪录', value: '纪录' },
+                { label: '惊悚', value: '惊悚' },
+            ],
             tableData: [
                 {
                     Cinema: '万达影城',
                     MovieName: '热辣滚烫',
+                    Region: '中国大陆',
                     Introduce: '乐莹（贾玲 饰）宅家多年，无所事事。大学毕业工作了一段时间后，乐莹选择脱离社会，封闭社交圈层，这是她认为与自己“和解”的最好方式。一日，在命运的几番“捉弄”下，她决定要换一种方式生活。在与外面的世界小心翼翼的接触中，乐莹结识了拳击教练昊坤（雷佳音 饰）。当她以为生活即将步入正轨时，接踵而至的考验却远超她的想像，滚烫的人生才刚刚开始………',
                     Performer: '贾玲',
                     ReleaseTime: '2024-3-30',
                     StartTime: '20:30:00',
                     EndTime: '22:30:00',
-                    Room: '1'
+                    Room: '1',
+                    Type: '喜剧'
                 },
                 {
                     Cinema: '新世纪影城',
                     MovieName: '飞驰人生2',
+                    Region: '中国大陆',
                     Introduce: '超欢乐！真刺激！好感动！沈腾领衔喜剧大片高口碑热映中！电影工业领先制作水平带来沉浸视听极致燃爽！一句“能扛住的，一起啊”送给五年前的你，这一次，不留一丝遗憾！ 昔日冠军车手张驰（沈腾 饰）沦为落魄驾校教练，过着靠脸吃饭勉强度日的生活。不料天上掉馅饼，濒临停产的老头乐车厂厂长（贾冰 饰）主动提出赞助张驰组建车队再闯最后一届巴音布鲁克拉力赛。面对这泼天的富贵，张驰蠢蠢欲动，而厂长背后真实的目的无人知晓……带资进队的车手厉小海（范丞丞 饰），看似单纯善良却为何有着与之身份毫不相符的超强天赋？ 张驰召集老朋友孙宇强（尹正 饰）和记星（张本煜 饰），与天才车手厉小海和总是考不过科目二的驾校学员刘显德（孙艺洲 饰）组成了一个苦中作乐、鸡飞狗跳的草台班子，克服重重困难，笑料百出地奔赴赛场。这一次他将超越无数次出现在梦中的终点线……',
                     Performer: '沈腾',
                     ReleaseTime: '2024-3-30',
                     StartTime: '20:30:00',
                     EndTime: '22:30:00',
-                    Room: '1'
+                    Room: '1',
+                    Type: '喜剧'
                 },
                 {
                     Cinema: '万达影城',
                     MovieName: '功夫熊猫4',
+                    Region: '中国大陆',
                     Introduce: '爷青回！《功夫熊猫》新作来袭！阿宝“升职”同时，新仇旧敌集结现身，大龙竟起死回生？狐狸小真身份神秘，到底有何心机？ 阿宝被师傅要求选出下一任神龙大侠，正苦恼如何应对时，阿宝昔日的手下败将们却纷纷重出江湖！身世神秘的狐狸小真告诉阿宝，这一切的幕后黑手正是邪恶女巫魅影妖后！阿宝能否打败魅影妖后，昔日敌人又为何再次现身？这次又会发生怎样的搞笑趣事？赶快带上亲朋好友，一起到影院寻找真相吧～',
                     Performer: '黄渤',
                     ReleaseTime: '2024-3-30',
                     StartTime: '20:30:00',
                     EndTime: '22:30:00',
-                    Room: '1'
+                    Room: '1',
+                    Type: '喜剧'
                 }
             ]
         };
@@ -208,7 +290,8 @@ export default {
                 ReleaseTime: '',
                 StartTime: '',
                 EndTime: '',
-                Room: ''
+                Room: '',
+                Type: ''
             };
         },
         openEditDialog(row) {
@@ -224,7 +307,8 @@ export default {
                 ReleaseTime: '',
                 StartTime: '',
                 EndTime: '',
-                Room: ''
+                Room: '',
+                Type: ''
             };
             ElMessage.success('添加电影成功');
         },
