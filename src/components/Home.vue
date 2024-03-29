@@ -47,7 +47,7 @@ export default {
         goToCiname(movieId) {
             axios({
                 method: 'get',
-                url: 'http://localhost:8080/movie/cinemaList/' + movieId,
+                url: 'http://localhost:8080/admin/user/cinema/list/' + movieId,
                 params: {
                     movieId: movieId
                 }

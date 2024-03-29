@@ -1,11 +1,11 @@
 <template>
     <div class="container">
-        <div class="cinema" v-for="(item, index) in CinemaData" :key="index" @click="GoMovieHome">
+        <div class="cinema" v-for="(item, index) in CinemaData" :key="index" @click="GoMovieHome(item.cinemaId)">
             <img :src="item.cinemaUrl" style="width: 300px; height: 300px">
             <h2>{{ item.cinemaName }}</h2>
             <p class="address">地址：{{ item.cinemaAddress }}</p>
             <p class="phone">电话：{{ item.cinemaPhone }}</p>
-            <p class="service">影院服务: 改签、3D眼镜免押金、免费WIFI、儿童优惠</p>
+            <p class="service">{{ item.cinemaServices }}</p>
         </div>
     </div>
 </template>
@@ -16,42 +16,59 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            CinemaData: []
+            CinemaData: [],
+            movieId: '',
         }
     },
     methods: {
-        GoMovieHome() {
-            this.$router.push('/ChooseTime')
+        GoMovieHome(cinemaId) {
+            axios({
+                method: 'get',
+                url: `http://localhost:8080/admin/user/screen/list/${this.movieId}/${cinemaId}`,
+                params: {
+                    movieId: this.movieId,
+                    cinemaId: cinemaId
+                }
+            }).then((res) => {
+                let ChooseTimeData = res.data.data
+                let ChooseTimeDataArr = []
+                for (let i = 0; i < ChooseTimeData.length; ++i) {
+                    ChooseTimeDataArr.push(ChooseTimeData[i])
+                }
+                this.$router.push({ path: '/ChooseTime', query: { ChooseTimeDataArr: JSON.stringify(ChooseTimeDataArr) } })
+            })
         }
     },
     mounted() {
         const cinemaIdArrString = this.$route.query.cinemaIdArr;
-        const movieId = this.$route.query.movieId
+        this.movieId = this.$route.query.movieId;
         const cinemaIdArr = []
         for (let i = 0; i < cinemaIdArrString.length; ++i) {
             cinemaIdArr.push(Number(cinemaIdArrString[i]))
         }
         axios({
             method: 'get',
-            url: 'http://localhost:8080/movie/cinemaList/' + movieId,
+            url: 'http://localhost:8080/admin/user/cinema/list/' + this.movieId,
             params: {
-                movieId: movieId,
+                movieId: this.movieId,
             }
         }).then((res) => {
             let cinemaData = res.data.data
             for (let i = 0; i < cinemaData.length; ++i) {
                 this.CinemaData.push({
-                    cinemaUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+                    cinemaId: cinemaData[i].cinemaId,
+                    cinemaUrl: cinemaData[i].cinemaImageUrl,
                     cinemaName: cinemaData[i].cinemaName,
                     cinemaAddress: cinemaData[i].cinemaAddress,
-                    cinemaPhone: '123456789'
-
+                    cinemaPhone: cinemaData[i].hotlinePhone,
+                    cinemaServices: cinemaData[i].cinemaServices
                 })
             }
         })
     }
 }
 </script>
+
 
 <style scoped>
 body {

@@ -22,38 +22,25 @@
 export default {
     data() {
         return {
-            TimeData: [
-                {
-                    Room: 3,
-                    LookTime: '2024-5-3',
-                    StartTime: '14:00:00',
-                    EndTime: '17:00:00'
-                },
-                {
-                    Room: 3,
-                    LookTime: '2024-5-3',
-                    StartTime: '14:00:00',
-                    EndTime: '17:00:00'
-                },
-                {
-                    Room: 3,
-                    LookTime: '2024-5-3',
-                    StartTime: '14:00:00',
-                    EndTime: '17:00:00'
-                },
-                {
-                    Room: 3,
-                    LookTime: '2024-5-3',
-                    StartTime: '14:00:00',
-                    EndTime: '17:00:00'
-                },
-
-            ]
+            MovieID: '',
+            TimeData: []
         }
     },
     methods: {
         GoHomeMovie() {
-            this.$router.push('/Movie')
+            this.$router.push({ path: '/Movie', query: { MovieID: this.MovieID } })
+        }
+    },
+    mounted() {
+        const ChooseTimeDataArr = JSON.parse(this.$route.query.ChooseTimeDataArr)
+        for (let i = 0; i < ChooseTimeDataArr.length; ++i) {
+            this.TimeData.push({
+                Room: ChooseTimeDataArr[i].screenName,
+                LookTime: ChooseTimeDataArr[i].showDate,
+                StartTime: ChooseTimeDataArr[i].startTime,
+                EndTime: ChooseTimeDataArr[i].endTime
+            })
+            this.MovieID = ChooseTimeDataArr[i].movieId
         }
     }
 }
@@ -116,21 +103,21 @@ export default {
 
 .TimeInfo-list li:nth-child(1) {
     position: absolute;
-    left: 9%;
+    left: 8%;
 }
 
 .TimeInfo-list li:nth-child(2) {
     position: absolute;
-    left: 33.8%;
+    left: 33.5%;
 }
 
 .TimeInfo-list li:nth-child(3) {
     position: absolute;
-    left: 58.3%;
+    left: 57.5%;
 }
 
 .TimeInfo-list li:nth-child(4) {
     position: absolute;
-    right: 15%;
+    right: 14.5%;
 }
 </style>
