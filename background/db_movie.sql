@@ -11,7 +11,7 @@
  Target Server Version : 80019
  File Encoding         : 65001
 
- Date: 27/03/2024 16:46:05
+ Date: 29/03/2024 13:39:51
 */
 
 SET NAMES utf8mb4;
@@ -22,14 +22,14 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `cinemas`;
 CREATE TABLE `cinemas`  (
-  `cinema_id` varchar(255) NOT NULL COMMENT '影院ID',
+  `cinema_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '影院ID',
   `cinema_image_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '影院图片URL',
   `cinema_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '影院名称',
   `cinema_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '影院地址',
   `cinema_services` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '影院服务',
   `hotline_phone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '热线电话',
   PRIMARY KEY (`cinema_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of cinemas
@@ -43,7 +43,7 @@ INSERT INTO `cinemas` VALUES ('3', 'https://p0.meituan.net/mmdb/fd146c7848a0ebca
 -- ----------------------------
 DROP TABLE IF EXISTS `movies`;
 CREATE TABLE `movies`  (
-  `movie_id` varchar(255) NOT NULL COMMENT '电影ID',
+  `movie_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '电影ID',
   `movie_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '电影名称',
   `movie_type` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '电影类型',
   `director` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '导演',
@@ -54,7 +54,7 @@ CREATE TABLE `movies`  (
   `release_date` date NULL DEFAULT NULL COMMENT '上映日期',
   `is_deleted` int NULL DEFAULT 0 COMMENT '状态',
   PRIMARY KEY (`movie_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of movies
@@ -68,34 +68,37 @@ INSERT INTO `movies` VALUES ('3', '你想活出怎样的人生', '剧情,奇幻,
 -- ----------------------------
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders`  (
-  `order_id` varchar(255) NOT NULL COMMENT '订单ID',
+  `order_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单ID',
   `movie_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '电影名称',
   `venue_address` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '场馆地址',
   `ticket_amount` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '票价',
   `payment_status` int NULL DEFAULT 0 COMMENT '支付状态(0-未支付 1-已支付)',
   `payment_time` datetime NULL DEFAULT NULL COMMENT '支付时间',
-  `user_id` varchar(255) NULL DEFAULT NULL COMMENT '用户ID',
+  `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户ID',
+  `screen_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '影厅ID',
   `seat_row` int NULL DEFAULT 0 COMMENT '座位行号',
   `seat_column` int NULL DEFAULT 0 COMMENT '座位列号',
   PRIMARY KEY (`order_id`) USING BTREE,
   INDEX `user_id`(`user_id` ASC) USING BTREE,
+  INDEX `fk_orders_screens`(`screen_id` ASC) USING BTREE,
+  CONSTRAINT `fk_orders_screens` FOREIGN KEY (`screen_id`) REFERENCES `screens` (`screen_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of orders
 -- ----------------------------
-INSERT INTO `orders` VALUES ('1', '送你一朵小红花', '万福国际影城/四号厅', 53.00, 1, '2024-03-27 14:26:24', '1', 5, 6);
+INSERT INTO `orders` VALUES ('1', '送你一朵小红花', '万福国际影城/四号厅', 53.00, 0, '2024-03-27 14:26:24', '1', '1', 5, 6);
 
 -- ----------------------------
 -- Table structure for roles
 -- ----------------------------
 DROP TABLE IF EXISTS `roles`;
 CREATE TABLE `roles`  (
-  `role_id` varchar(255) NOT NULL COMMENT '角色ID',
+  `role_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色ID',
   `role_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '' COMMENT '角色名称',
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of roles
@@ -108,48 +111,50 @@ INSERT INTO `roles` VALUES ('2', '普通用户');
 -- ----------------------------
 DROP TABLE IF EXISTS `screens`;
 CREATE TABLE `screens`  (
-  `screen_id` varchar(255) NOT NULL COMMENT '影厅ID',
-  `cinema_id` varchar(255) NULL DEFAULT NULL COMMENT '影院ID',
+  `screen_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '影厅ID',
+  `cinema_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '影院ID',
   `row_s` int NULL DEFAULT 0 COMMENT '行数',
   `col_s` int NULL DEFAULT 0 COMMENT '列数',
-  `movie_id` varchar(255) NULL DEFAULT 0 COMMENT '电影ID',
+  `movie_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '电影ID',
   `start_time` time NULL DEFAULT '00:00:00' COMMENT '开始时间',
   `end_time` time NULL DEFAULT '00:00:00' COMMENT '结束时间',
   `show_date` date NULL DEFAULT NULL COMMENT '放映日期',
   `screen_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '影厅名称',
+  `price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '票价',
   PRIMARY KEY (`screen_id`) USING BTREE,
   INDEX `cinema_id`(`cinema_id` ASC) USING BTREE,
   INDEX `movie_id`(`movie_id` ASC) USING BTREE,
   CONSTRAINT `screens_ibfk_1` FOREIGN KEY (`cinema_id`) REFERENCES `cinemas` (`cinema_id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `screens_ibfk_2` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`movie_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of screens
 -- ----------------------------
-INSERT INTO `screens` VALUES ('1', '1', 12, 14, '1', '09:00:00', '14:00:00', '2024-03-27', '一号厅');
-INSERT INTO `screens` VALUES ('2', '1', 10, 12, '1', '11:00:00', '17:00:00', '2024-03-22', '二号厅');
-INSERT INTO `screens` VALUES ('3', '2', 13, 14, '1', '12:00:00', '20:00:00', '2024-03-12', '一号厅');
-INSERT INTO `screens` VALUES ('4', '3', 15, 15, '2', '08:00:00', '19:00:00', '2024-03-05', '三号厅');
+INSERT INTO `screens` VALUES ('1', '1', 12, 14, '1', '09:00:00', '14:00:00', '2024-03-27', '一号厅', 56.00);
+INSERT INTO `screens` VALUES ('2', '1', 10, 12, '1', '11:00:00', '17:00:00', '2024-03-31', '二号厅', 56.00);
+INSERT INTO `screens` VALUES ('3', '2', 13, 14, '1', '12:00:00', '20:00:00', '2024-03-12', '一号厅', 56.00);
+INSERT INTO `screens` VALUES ('4', '3', 15, 15, '2', '08:00:00', '19:00:00', '2024-03-05', '三号厅', 56.00);
 
 -- ----------------------------
 -- Table structure for users
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users`  (
-  `user_id` varchar(255) NOT NULL COMMENT '用户ID',
+  `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户ID',
   `user_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'user' COMMENT '用户名',
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '123456' COMMENT '密码',
-  `role_id` varchar(255) NULL DEFAULT 0 COMMENT '角色ID',
+  `role_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT '0' COMMENT '角色ID',
   PRIMARY KEY (`user_id`) USING BTREE,
   INDEX `role_id`(`role_id` ASC) USING BTREE,
   CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
 INSERT INTO `users` VALUES ('1', 'user', '123456', '2');
 INSERT INTO `users` VALUES ('2', 'admin', '123456', '1');
+INSERT INTO `users` VALUES ('2b0fdff1a9e026eba2f9c7f74c49b409', 'user1', '123456', '1');
 
 SET FOREIGN_KEY_CHECKS = 1;
