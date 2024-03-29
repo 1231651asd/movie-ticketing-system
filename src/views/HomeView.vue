@@ -9,19 +9,14 @@
                 <form @submit.prevent="handleLogin">
                     <div class="form-group">
                         <label for="username">帐号:</label>
-                        <input required="" name="account" id="account" type="text" v-model="loginForm.userName">
+                        <input required="" name="account" id="account" type="text" v-model="loginForm.account">
                     </div>
                     <div class="form-group">
                         <label for="password">密码:</label>
-                        <input required="" name="password" id="password" type="password" v-model="loginForm.userPwd">
-                    </div>
-                    <div class="captcha">
-                        <input v-model="loginForm.code" placeholder="请输入验证码" class="input1">
-                        <img :src="captchaSrc" />
-                        <!-- //@click="refreshCaptcha" -->
+                        <input required="" name="password" id="password" type="password" v-model="loginForm.password">
                     </div>
                     <div class="form-group">
-                        <input value="登录" type="submit" @click="handleLogin()">
+                        <input value="登录" type="submit">
                     </div>
                     <div class="form-group">
                         <input value="注册" type="button" @click="GoRegister">
@@ -69,12 +64,10 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            captchaSrc: '',
             isRegister: false,
             loginForm: {
-                userName: '',
-                userPwd: '',
-                code: ''
+                account: '',
+                password: ''
             },
             registerForm: {
                 account: '',
@@ -83,24 +76,10 @@ export default {
             }
         }
     },
-    mounted() {
-        this.fetchVerificationCode()
-    },
     methods: {
-in() {
+        handleLogin() {
             if (!this.isRegister && this.validateLoginForm()) {
-                axios({
-                    method: 'post',
-                    url: 'http://localhost:8080/user/login',
-                    data: {
-                        userName: this.loginForm.account,
-                        userPwd: this.loginForm.password
-                    }
-                }).then(() => {
-                    console.log(userName)
-                }).catch((err) => {
-                    console.error(err)
-                })
+
             }
         },
 
@@ -142,7 +121,6 @@ in() {
     justify-content: center;
     align-items: center;
     height: 100%;
-    /* 让内部容器在垂直方向上居中显示 */
 }
 
 .login-card {

@@ -1,6 +1,13 @@
 <template>
     <div class="container">
         <div class="aside">
+            <h3>
+                <el-page-header @back="goBack">
+                    <template #content>
+                        <span class="text-large font-600 mr-3"> 个人信息 </span>
+                    </template>
+                </el-page-header>
+            </h3>
             <h2>导航</h2>
             <div class="order" @click="changeComponents('OrderingInformation')">订单信息</div>
             <div class="password" @click="changeComponents('UserModifyPassword')">修改密码</div>
@@ -13,8 +20,6 @@
 </template>
 
 <script>
-
-
 import OrderingInformation from '@/components/OrderingInformation.vue'
 import UserModifyPassword from '@/components/UserModifyPassword.vue'
 export default {
@@ -27,6 +32,9 @@ export default {
     methods: {
         changeComponents(component) {
             this.currentComponent = component
+        },
+        goBack() {
+            this.$router.push('/Home')
         }
     },
     components: {
@@ -53,10 +61,22 @@ body {
     background-color: #209CE2;
 }
 
+.aside h3 {
+    position: absolute;
+    margin-top: 10px;
+    margin-left: 10px;
+    font-size: 20px;
+    font-weight: 1000;
+}
+
+.aside h3:hover {
+    color: red;
+    cursor: pointer;
+}
 
 .aside h2 {
     position: absolute;
-    margin-top: 30px;
+    margin-top: 150px;
     margin-left: 100px;
     color: white;
 }
@@ -69,7 +89,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 100px;
     background-color: #6EAC36;
 }
 
@@ -88,7 +108,7 @@ body {
     justify-content: center;
     align-items: center;
     background-color: #6EAC36;
-    margin-top: 10px;
+    margin-top: 100px;
 }
 
 .password:hover {

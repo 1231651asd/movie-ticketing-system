@@ -72,14 +72,14 @@ export default {
     mounted() {
         axios({
             method: 'get',
-            url: 'http://localhost:8080/movie/movieList/6'
+            url: 'http://localhost:8080/admin/user/movie/list/3'
         }).then((res) => {
             let Data = res.data.data
             for (let i = 0; i < Data.length; ++i) {
                 this.movieData.push({
                     movieId: Data[i].movieId,
-                    imageUrl: Data[i].moviePicture,
-                    title: Data[i].movieCnName
+                    imageUrl: Data[i].posterUrl,
+                    title: Data[i].movieName
                 });
             }
         }).catch((err) => {
