@@ -63,6 +63,7 @@ export default {
             })
         },
         loginOut() {
+            localStorage.removeItem('userID')
             this.$router.push('/')
         },
         GoUserInfo() {

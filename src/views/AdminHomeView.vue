@@ -4,6 +4,7 @@
             <h2>导航</h2>
             <div class="schedule" @click="changeComponents('schedule')">添加排期</div>
             <div class="password" @click="changeComponents('password')">修改密码</div>
+            <div class="loginOut" @click="loginOut">退出登录</div>
         </div>
         <div class="header">
             <h2>电影购票管理系统</h2>
@@ -28,7 +29,11 @@ export default {
     methods: {
         changeComponents(component) {
             this.currentComponent = component;
-        }
+        },
+        loginOut() {
+            localStorage.removeItem('userID')
+            this.$router.push('/')
+        },
     },
     components: {
         schedule,
@@ -92,6 +97,24 @@ body {
 }
 
 .password:hover {
+    cursor: pointer;
+    color: white;
+    background-color: gray;
+}
+
+.loginOut {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    top: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #6EAC36;
+    margin-top: 10px;
+}
+
+.loginOut:hover {
     cursor: pointer;
     color: white;
     background-color: gray;

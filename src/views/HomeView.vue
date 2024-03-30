@@ -37,36 +37,41 @@ export default {
             this.$router.push('/Register')
         },
         Login() {
-            axios({
-                method: 'post',
-                url: 'http://localhost:8080/admin/user/login',
-                data: {
-                    userName: this.account,
-                    password: this.password
-                }
-            }).then((res) => {
-                let userData = res.data
-                console.log(userData)
-                if (userData.message === '操作成功' && userData.data.roleName === '管理员') {
-                    ElMessage({
-                        message: '登录成功',
-                        type: 'success',
-                    })
-                    setTimeout(() => {
-                        this.$router.push('/AdminHome')
-                    }, 1000)
-                } else if (userData.message === '操作成功' && userData.data.roleName === '普通用户') {
-                    ElMessage({
-                        message: '登录成功',
-                        type: 'success',
-                    })
-                    setTimeout(() => {
-                        this.$router.push('/Home')
-                    }, 1000);
-                } else {
-                    ElMessage.error('用户名或密码错误')
-                }
-            })
+            if (this.account === '' || this.password === '') {
+                ElMessage.error('请输入相关信息')
+            } else {
+                axios({
+                    method: 'post',
+                    url: 'http://localhost:8080/admin/user/login',
+                    data: {
+                        userName: this.account,
+                        password: this.password
+                    }
+                }).then((res) => {
+                    let userData = res.data
+                    if (userData.message === '操作成功' && userData.data.roleName === '管理员') {
+                        ElMessage({
+                            message: '登录成功',
+                            type: 'success',
+                        })
+                        localStorage.setItem('userID', userData.data.userId)
+                        setTimeout(() => {
+                            this.$router.push('/AdminHome')
+                        }, 1000)
+                    } else if (userData.message === '操作成功' && userData.data.roleName === '普通用户') {
+                        ElMessage({
+                            message: '登录成功',
+                            type: 'success',
+                        })
+                        localStorage.setItem('userID', userData.data.userId)
+                        setTimeout(() => {
+                            this.$router.push('/Home')
+                        }, 1000);
+                    } else {
+                        ElMessage.error('用户名或密码错误')
+                    }
+                })
+            }
         }
     }
 }

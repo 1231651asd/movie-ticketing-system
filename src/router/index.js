@@ -59,4 +59,32 @@ const router = createRouter({
   ]
 })
 
+router.beforeEach((to, from, next) => {
+  const user = checkUserLogin();
+
+  if (!user) {
+    if (to.name !== 'HomeView') {
+      next('/');
+    } else {
+      next();
+    }
+  } else {
+    const role = parseInt(localStorage.getItem('userID'));
+
+    if (to.name === 'AdminHome' && role !== 1) {
+      next(false)
+      router.go(-1);
+    } else {
+      next();
+    }
+  }
+})
+
+
+
+
+//验证用户是否登录
+function checkUserLogin() {
+  return localStorage.getItem('userID') !== null
+}
 export default router
