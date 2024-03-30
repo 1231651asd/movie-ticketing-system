@@ -2,7 +2,7 @@
     <div class="background">
         <div class="form">
             <div class="title">欢迎</div>
-            <div class="subtitle">请先登录!</div>
+            <div class="subtitle">请先注册!</div>
 
             <div class="input-container ic1">
                 <input v-model="account" type="text" class="input" id="account">
@@ -15,8 +15,14 @@
                 <div class="cut"></div>
                 <label class="iLabel" :class="{ 'active': password !== '' }" for="password">密码</label>
             </div>
-            <button class="submit" type="text" @click="Login">登录</button>
-            <button class="submit" type="text" @click="GoRegister">注册</button>
+            <div class="input-container ic2">
+                <input v-model="InvitationCode" type="text" class="input" id="InvitationCode">
+                <div class="cut"></div>
+                <label class="iLabel" :class="{ 'active': InvitationCode !== '' }"
+                    for="InvitationCode">邀请码(管理员填1,用户填2)</label>
+            </div>
+            <button class="submit" type="text" @click="Register">注册</button>
+            <button class="submit" type="text" @click="GoLogin">已有帐号?去登录</button>
         </div>
     </div>
 
@@ -25,46 +31,41 @@
 <script>
 import axios from 'axios';
 import { ElMessage } from 'element-plus'
+
 export default {
     data() {
         return {
             account: '',
-            password: ''
+            password: '',
+            InvitationCode: ''
         }
     },
     methods: {
-        GoRegister() {
-            this.$router.push('/Register')
+        GoLogin() {
+            this.$router.push('/')
         },
-        Login() {
+        Register() {
             axios({
                 method: 'post',
-                url: 'http://localhost:8080/admin/user/login',
+                url: 'http://localhost:8080/admin/user/sign',
                 data: {
                     userName: this.account,
-                    password: this.password
+                    password: this.password,
+                    key: this.InvitationCode
                 }
             }).then((res) => {
-                let userData = res.data
-                console.log(userData)
-                if (userData.message === '操作成功' && userData.data.roleName === '管理员') {
-                    ElMessage({
-                        message: '登录成功',
-                        type: 'success',
-                    })
-                    setTimeout(() => {
-                        this.$router.push('/AdminHome')
-                    }, 1000)
-                } else if (userData.message === '操作成功' && userData.data.roleName === '普通用户') {
-                    ElMessage({
-                        message: '登录成功',
-                        type: 'success',
-                    })
-                    setTimeout(() => {
-                        this.$router.push('/Home')
-                    }, 1000);
+                console.log(res.data.message)
+                let RegisterData = res.data.message
+                if (RegisterData === '用户已存在') {
+                    ElMessage.error('该用户名已存在')
                 } else {
-                    ElMessage.error('用户名或密码错误')
+                    ElMessage({
+                        message: '注册成功',
+                        type: 'success',
+                    })
+                    setTimeout(() => {
+                        this.$router.push('/')
+                    }, 1000);
                 }
             })
         }
@@ -89,7 +90,7 @@ export default {
     background-color: #15172b;
     border-radius: 20px;
     box-sizing: border-box;
-    height: 500px;
+    height: 600px;
     padding: 20px;
     width: 320px;
 

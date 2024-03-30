@@ -4,10 +4,16 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      //登录注册页面
+      //登录页面
       path: '/',
       name: 'HomeView',
       component: HomeView
+    },
+    {
+      // 注册页面
+      path: '/Register',
+      name: 'Register',
+      component: () => import('../views/Register.vue')
     },
     {
       //管理员页面
