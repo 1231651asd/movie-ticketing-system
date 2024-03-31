@@ -23,8 +23,6 @@
 </template>
 <script>
 import axios from 'axios';
-import { useCounterStore } from '../stores/counter'
-
 export default {
     data() {
         return {
@@ -37,8 +35,7 @@ export default {
         }
     },
     mounted() {
-        const useStore = useCounterStore()
-        const movieId = useStore.movieId;
+        const movieId = localStorage.getItem('movieId')
 
         axios({
             method: 'get',

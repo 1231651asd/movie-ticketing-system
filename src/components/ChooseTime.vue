@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div v-for="(item, index) in TimeData" :key="index" class="time" :style="{ top: `${index * 200}px` }"
-            @click="GoHomeMovie">
+            @click="GoHomeMovie(item.ScreenId)">
             <ul class="title-list">
                 <li class="title-item">观看时间</li>
                 <li class="title-item">开始时间</li>
@@ -19,16 +19,15 @@
 </template>
 
 <script>
-
 export default {
     data() {
         return {
-            MovieID: '',
             TimeData: []
         }
     },
     methods: {
-        GoHomeMovie() {
+        GoHomeMovie(screenId) {
+            localStorage.setItem('screenId', screenId)
             this.$router.push('/Movie')
         }
     },
@@ -36,6 +35,7 @@ export default {
         const ChooseTimeDataArr = JSON.parse(this.$route.query.ChooseTimeDataArr)
         for (let i = 0; i < ChooseTimeDataArr.length; ++i) {
             this.TimeData.push({
+                ScreenId: ChooseTimeDataArr[i].screenId,
                 Room: ChooseTimeDataArr[i].screenName,
                 LookTime: ChooseTimeDataArr[i].showDate,
                 StartTime: ChooseTimeDataArr[i].startTime,

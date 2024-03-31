@@ -6,6 +6,7 @@ export const useCounterStore = defineStore('counter', () => {
     state: () => ({
       movieId: null,
       cinemaId: null,
+      screenId: null
     }),
   }
 
