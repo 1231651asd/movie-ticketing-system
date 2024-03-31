@@ -32,7 +32,7 @@
 
 <script>
 import axios from 'axios';
-
+import { useCounterStore } from '../stores/counter'
 export default {
     data() {
         return {
@@ -45,6 +45,7 @@ export default {
     },
     methods: {
         goToCiname(movieId) {
+            const useStore = useCounterStore()
             axios({
                 method: 'get',
                 url: 'http://localhost:8080/admin/user/cinema/list/' + movieId,
@@ -57,7 +58,8 @@ export default {
                 for (let i = 0; i < CinemaData.length; ++i) {
                     cinemaIdArr.push(CinemaData[i].cinemaId)
                 }
-                this.$router.push({ path: '/Cinema', query: { cinemaIdArr: cinemaIdArr, movieId } })
+                useStore.movieId = movieId
+                this.$router.push({ path: '/Cinema', query: { cinemaIdArr: cinemaIdArr } })
             }).catch((err) => {
                 console.error(err)
             })

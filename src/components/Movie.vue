@@ -23,6 +23,7 @@
 </template>
 <script>
 import axios from 'axios';
+import { useCounterStore } from '../stores/counter'
 
 export default {
     data() {
@@ -32,11 +33,13 @@ export default {
     },
     methods: {
         GoBuyTickets() {
-            this.$router.push('/BuyTickets')
+            this.$router.push({ path: '/BuyTickets', query: { posterUrl: this.MovieData.posterUrl } })
         }
     },
     mounted() {
-        const movieId = this.$route.query.MovieID;
+        const useStore = useCounterStore()
+        const movieId = useStore.movieId;
+
         axios({
             method: 'get',
             url: 'http://localhost:8080/admin/user/movie/getById/' + movieId,
@@ -53,11 +56,12 @@ export default {
 
 <style scoped>
 .container {
-    background-color: #3C305A;
+    background-color: #dfdbe7;
     height: 100vh;
     width: 100%;
     position: fixed;
 }
+
 
 
 .header {

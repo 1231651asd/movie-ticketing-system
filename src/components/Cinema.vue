@@ -12,16 +12,19 @@
 
 <script>
 import axios from 'axios'
+import { useCounterStore } from '../stores/counter'
 
 export default {
     data() {
         return {
             CinemaData: [],
             movieId: '',
+            active: ''
         }
     },
     methods: {
         GoMovieHome(cinemaId) {
+            const useStore = useCounterStore()
             axios({
                 method: 'get',
                 url: `http://localhost:8080/admin/user/screen/list/${this.movieId}/${cinemaId}`,
@@ -35,13 +38,15 @@ export default {
                 for (let i = 0; i < ChooseTimeData.length; ++i) {
                     ChooseTimeDataArr.push(ChooseTimeData[i])
                 }
+                useStore.cinemaId = cinemaId
                 this.$router.push({ path: '/ChooseTime', query: { ChooseTimeDataArr: JSON.stringify(ChooseTimeDataArr) } })
             })
         }
     },
     mounted() {
+        const useStore = useCounterStore()
         const cinemaIdArrString = this.$route.query.cinemaIdArr;
-        this.movieId = this.$route.query.movieId;
+        this.movieId = useStore.movieId
         const cinemaIdArr = []
         for (let i = 0; i < cinemaIdArrString.length; ++i) {
             cinemaIdArr.push(Number(cinemaIdArrString[i]))
@@ -86,6 +91,8 @@ body {
     margin-top: 50px;
     flex-wrap: wrap;
 }
+
+
 
 .cinema {
     display: flex;

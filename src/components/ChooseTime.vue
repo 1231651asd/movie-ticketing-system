@@ -19,6 +19,7 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
@@ -28,7 +29,7 @@ export default {
     },
     methods: {
         GoHomeMovie() {
-            this.$router.push({ path: '/Movie', query: { MovieID: this.MovieID } })
+            this.$router.push('/Movie')
         }
     },
     mounted() {
@@ -40,7 +41,6 @@ export default {
                 StartTime: ChooseTimeDataArr[i].startTime,
                 EndTime: ChooseTimeDataArr[i].endTime
             })
-            this.MovieID = ChooseTimeDataArr[i].movieId
         }
     }
 }

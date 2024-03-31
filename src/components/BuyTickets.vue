@@ -21,15 +21,13 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { useCounterStore } from '../stores/counter'
+
 export default {
     data() {
         return {
-            MovieData: {
-                imageUrl: 'https://p0.pipi.cn/mmdb/54ecde9a2ffc7e21f0ecd8bb48ec78326e683.jpg?imageView2/1/w/464/h/644',
-                cinema: '万达影院',
-                room: '1',
-                time: '2024-3-18 14:00:00'
-            },
+            MovieData: {},
             seatData: [
                 { seatNumber: 1, selected: false },
                 { seatNumber: 2, selected: false },
@@ -101,6 +99,19 @@ export default {
         GoHome() {
             this.$router.push('/Home')
         }
+    },
+    mounted() {
+        const useStore = useCounterStore()
+
+        const posterUrl = this.$route.query.posterUrl
+        this.MovieData.imageUrl = posterUrl
+        axios({
+            method: 'get',
+            url: `http://localhost:8080/admin/user/screen/list/${useStore.movieId}/${useStore.cinemaId}`
+        }).then((res) => {
+            let screenData = res.data.data
+            console.log(screenData.cinemaId)
+        })
     }
 }
 
@@ -122,6 +133,7 @@ body {
     margin: 0 auto;
     margin-top: 30px;
 }
+
 
 .movie {
     position: absolute;
