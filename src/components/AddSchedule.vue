@@ -23,22 +23,12 @@
         <el-button class="mt-4" style="width: 100%; color: red;" @click="onAddItem">添加电影排期</el-button>
         <el-dialog v-model="dialogFormVisible" title="添加电影" width="500">
             <el-form :model="form">
-                <!-- <el-form-item label="上传海报" :label-width="formLabelWidth">
-                    <input type="file" @change="handleFileUpload" accept="image/*">
-                    <img :src="form.ImageUrl" style="width: 160px;height: 235px;" v-if="form.ImageUrl">
-                </el-form-item> -->
                 <el-form-item label="影城" :label-width="formLabelWidth">
                     <el-select v-model="form.Cinema" placeholder="请选择影城">
                         <el-option v-for="item in CinemaOptions" :key="item.value" :label="item.label"
                             :value="item.value" />
                     </el-select>
                 </el-form-item>
-                <!-- <el-form-item label="上映地区" :label-width="formLabelWidth">
-                    <el-select v-model="form.Region" placeholder="请选择地区">
-                        <el-option v-for="item in RegionOptions" :key="item.value" :label="item.label"
-                            :value="item.value" />
-                    </el-select>
-                </el-form-item> -->
                 <el-form-item label="电影名称" :label-width="formLabelWidth">
                     <el-select v-model="form.MovieName" placeholder="请选择电影">
                         <el-option v-for="item in MovieOptions" :key="item.value" :label="item.label"
@@ -60,18 +50,6 @@
                 <el-form-item label="影厅" :label-width="formLabelWidth">
                     <el-input v-model="form.Room" autocomplete="off" />
                 </el-form-item>
-                <!-- <el-form-item label="电影类型" :label-width="formLabelWidth">
-                    <el-select v-model="form.Type" placeholder="请选择电影类型" multiple>
-                        <el-option v-for="item in TypeOptions" :key="item.value" :label="item.label"
-                            :value="item.value" />
-                    </el-select>
-                </el-form-item> -->
-                <!-- <el-form-item label="演员" :label-width="formLabelWidth">
-                    <el-input v-model="form.Performer" style="width: 240px" />
-                </el-form-item>
-                <el-form-item label="简介" :label-width="formLabelWidth">
-                    <el-input v-model="form.Introduce" style="width: 240px" autosize type="textarea" />
-                </el-form-item> -->
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
@@ -85,22 +63,12 @@
         <!-- 编辑电影信息 -->
         <el-dialog v-model="EditDialogFormVisible" title="电影信息编辑" width="500">
             <el-form :model="form">
-                <!-- <el-form-item label="上传海报" :label-width="formLabelWidth">
-                    <input type="file" @change="handleFileUpload" accept="image/*">
-                    <img :src="form.ImageUrl" style="width: 160px;height: 235px;" v-if="form.ImageUrl">
-                </el-form-item> -->
                 <el-form-item label="影城" :label-width="formLabelWidth">
                     <el-select v-model="form.Cinema" placeholder="请选择影城">
                         <el-option v-for="item in CinemaOptions" :key="item.value" :label="item.label"
                             :value="item.value" />
                     </el-select>
                 </el-form-item>
-                <!-- <el-form-item label="上映地区" :label-width="formLabelWidth">
-                    <el-select v-model="form.Region" placeholder="请选择地区">
-                        <el-option v-for="item in RegionOptions" :key="item.value" :label="item.label"
-                            :value="item.value" />
-                    </el-select>
-                </el-form-item> -->
                 <el-form-item label="电影名称" :label-width="formLabelWidth">
                     <el-select v-model="form.MovieName" placeholder="请选择电影">
                         <el-option v-for="item in MovieOptions" :key="item.value" :label="item.label"
@@ -122,18 +90,6 @@
                 <el-form-item label="影厅" :label-width="formLabelWidth">
                     <el-input v-model="form.Room" autocomplete="off" />
                 </el-form-item>
-                <!-- <el-form-item label="电影类型" :label-width="formLabelWidth">
-                    <el-select v-model="form.Type" placeholder="请选择电影类型" multiple>
-                        <el-option v-for="item in TypeOptions" :key="item.value" :label="item.label"
-                            :value="item.value" />
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="演员" :label-width="formLabelWidth">
-                    <el-input v-model="form.Performer" style="width: 240px" />
-                </el-form-item>
-                <el-form-item label="简介" :label-width="formLabelWidth">
-                    <el-input v-model="form.Introduce" style="width: 240px" autosize type="textarea" />
-                </el-form-item> -->
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
