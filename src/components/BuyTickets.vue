@@ -130,9 +130,10 @@ export default {
         }).then((res) => {
             this.MovieData = res.data.data
             let seatData = res.data.data.seats
-            console.log(this.MovieData)
-            for (let i = 0; i < seatData.length; ++i) {
-                console.log(seatData[i])
+            console.log(seatData)
+            for (var key in seatData) {
+            for (var key1 in seatData[key])
+            console.log("Property:", key1, "Value:", seatData[key][key1]);
             }
         })
     }
