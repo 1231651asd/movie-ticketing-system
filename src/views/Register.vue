@@ -3,7 +3,6 @@
         <div class="form">
             <div class="title">欢迎</div>
             <div class="subtitle">请先注册!</div>
-
             <div class="input-container ic1">
                 <input v-model="account" type="text" class="input" id="account">
                 <div class="cut"></div>

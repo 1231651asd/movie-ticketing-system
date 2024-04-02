@@ -63,7 +63,7 @@ router.beforeEach((to, from, next) => {
   const user = checkUserLogin();
 
   if (!user) {
-    if (to.name !== 'HomeView') {
+    if (to.name !== 'HomeView' && to.name !== 'Register') {
       next('/');
     } else {
       next();

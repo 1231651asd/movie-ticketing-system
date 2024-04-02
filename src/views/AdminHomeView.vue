@@ -2,6 +2,7 @@
     <div class="container">
         <div class="aside">
             <h2>导航</h2>
+            <div class="movieData" @click="changeComponents('movieData')">添加电影信息</div>
             <div class="schedule" @click="changeComponents('schedule')">添加排期</div>
             <div class="password" @click="changeComponents('password')">修改密码</div>
             <div class="loginOut" @click="loginOut">退出登录</div>
@@ -17,13 +18,16 @@
 
 
 <script>
+import { ElMessage } from 'element-plus'
 
 import schedule from '@/components/AddSchedule.vue'
 import password from '@/components/ModifyPassword.vue'
+import movieData from '@/components/MovieData.vue'
+
 export default {
     data() {
         return {
-            currentComponent: 'schedule'
+            currentComponent: 'movieData'
         }
     },
     methods: {
@@ -33,11 +37,16 @@ export default {
         loginOut() {
             localStorage.removeItem('userID')
             this.$router.push('/')
+            ElMessage({
+                message: '退出成功',
+                type: 'success',
+            })
         },
     },
     components: {
         schedule,
-        password
+        password,
+        movieData
     }
 }
 
@@ -66,11 +75,29 @@ body {
     color: white;
 }
 
-.schedule {
+.movieData {
     position: absolute;
     width: 100%;
     height: 50px;
     top: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    background-color: #6EAC36;
+}
+
+.movieData:hover {
+    cursor: pointer;
+    color: white;
+    background-color: gray;
+}
+
+.schedule {
+    position: absolute;
+    width: 100%;
+    height: 50px;
+    top: 25%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -88,7 +115,7 @@ body {
     position: absolute;
     width: 100%;
     height: 50px;
-    top: 25%;
+    top: 35%;
     display: flex;
     justify-content: center;
     align-items: center;

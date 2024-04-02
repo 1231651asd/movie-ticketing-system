@@ -28,6 +28,9 @@
                         <el-input disabled v-model="item.EndTime" autocomplete="off" />
                     </el-form-item>
                     <el-form-item label="影厅" :label-width="formLabelWidth">
+                        <el-input disabled v-model="item.Seat" autocomplete="off" />
+                    </el-form-item>
+                    <el-form-item label="影厅" :label-width="formLabelWidth">
                         <el-input disabled v-model="item.Room" autocomplete="off" />
                     </el-form-item>
                     <el-form-item label="二维码" :label-width="formLabelWidth">
@@ -54,6 +57,7 @@ export default {
                     StartTime: '14:00:00',
                     EndTime: '17:00:00',
                     Room: 3,
+                    Seat: '1排2座',
                     QR: '/QR.jpg',
                     Cover: 'https://p0.pipi.cn/mmdb/54ecde9a2ffc7e21f0ecd8bb48ec78326e683.jpg?imageView2/1/w/464/h/644'
                 },
@@ -65,6 +69,7 @@ export default {
                     StartTime: '14:00:00',
                     EndTime: '17:00:00',
                     Room: 3,
+                    Seat: '1排2座',
                     QR: '/QR.jpg',
                     Cover: 'https://p0.pipi.cn/mmdb/54ecdebe80751becd8c9fd799d14608745656.jpg?imageView2/1/w/464/h/644'
                 },
@@ -76,6 +81,7 @@ export default {
                     StartTime: '14:00:00',
                     EndTime: '17:00:00',
                     Room: 3,
+                    Seat: '1排2座',
                     QR: '/QR.jpg',
                     Cover: 'https://p0.pipi.cn/mmdb/54ecde9a2ffc7e21f0ecd8bb48ec78326e683.jpg?imageView2/1/w/464/h/644'
                 },
@@ -87,6 +93,7 @@ export default {
                     StartTime: '14:00:00',
                     EndTime: '17:00:00',
                     Room: 3,
+                    Seat: '1排2座',
                     QR: '/QR.jpg',
                     Cover: 'https://p0.pipi.cn/mmdb/54ecde9a2ffc7e21f0ecd8bb48ec78326e683.jpg?imageView2/1/w/464/h/644'
                 }

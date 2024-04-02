@@ -2,12 +2,12 @@
     <div>
         <!-- 展示电影相关信息 -->
         <el-table :data="tableData" style="width: 100%" max-height="250">
-            <el-table-column prop="Cinema" label="影城" width="180" />
-            <el-table-column prop="MovieName" label="电影名称" width="180" />
-            <el-table-column prop="ReleaseTime" label="观看时间" width="180" />
-            <el-table-column prop="StartTime" label="开始时间" width="180" />
-            <el-table-column prop="EndTime" label="结束时间" width="180" />
-            <el-table-column prop="Room" label="影厅" width="180" />
+            <el-table-column prop="MovieName" label="电影名称" width="150" />
+            <el-table-column prop="Region" label="上映地区" width="150" />
+            <el-table-column prop="ReleaseTime" label="上映时间" width="120" />
+            <el-table-column prop="Type" label="类型" width="120" />
+            <el-table-column prop="Performer" label="演员" width="120" />
+            <el-table-column prop="Introduce" label="简介" width="6000" />
             <el-table-column fixed="right" label="Operations" width="120">
                 <template #default="scope">
                     <el-button link type="primary" size="large" @click.prevent="openEditDialog(scope.row)">
@@ -19,59 +19,39 @@
                 </template>
             </el-table-column>
         </el-table>
-        <!-- 添加电影排期 -->
-        <el-button class="mt-4" style="width: 100%; color: red;" @click="onAddItem">添加电影排期</el-button>
+        <!-- 添加电影 -->
+        <el-button class="mt-4" style="width: 100%; color: red;" @click="onAddItem">添加电影</el-button>
         <el-dialog v-model="dialogFormVisible" title="添加电影" width="500">
             <el-form :model="form">
-                <!-- <el-form-item label="上传海报" :label-width="formLabelWidth">
+                <el-form-item label="上传海报" :label-width="formLabelWidth">
                     <input type="file" @change="handleFileUpload" accept="image/*">
                     <img :src="form.ImageUrl" style="width: 160px;height: 235px;" v-if="form.ImageUrl">
-                </el-form-item> -->
-                <el-form-item label="影城" :label-width="formLabelWidth">
-                    <el-select v-model="form.Cinema" placeholder="请选择影城">
-                        <el-option v-for="item in CinemaOptions" :key="item.value" :label="item.label"
-                            :value="item.value" />
-                    </el-select>
                 </el-form-item>
-                <!-- <el-form-item label="上映地区" :label-width="formLabelWidth">
-                    <el-select v-model="form.Region" placeholder="请选择地区">
+                <el-form-item label="上映地区" :label-width="formLabelWidth">
+                    <el-select v-model="form.Region" placeholder="地区">
                         <el-option v-for="item in RegionOptions" :key="item.value" :label="item.label"
                             :value="item.value" />
                     </el-select>
-                </el-form-item> -->
-                <el-form-item label="电影名称" :label-width="formLabelWidth">
-                    <el-select v-model="form.MovieName" placeholder="请选择电影">
-                        <el-option v-for="item in MovieOptions" :key="item.value" :label="item.label"
-                            :value="item.value" />
-                    </el-select>
                 </el-form-item>
-                <el-form-item label="观看时间" :label-width="formLabelWidth">
+                <el-form-item label="电影名称" :label-width="formLabelWidth">
+                    <el-input v-model="form.MovieName" autocomplete="off" />
+                </el-form-item>
+                <el-form-item label="上映时间" :label-width="formLabelWidth">
                     <el-date-picker v-model="form.ReleaseTime" type="date" placeholder="选择日期" format="YYYY/MM/DD"
                         value-format="YYYY-MM-DD" />
                 </el-form-item>
-                <el-form-item label="开始时间" :label-width="formLabelWidth">
-                    <el-time-picker v-model="form.StartTime" placeholder="选择开始时间" format="HH:mm:ss"
-                        value-format="HH:mm:ss" />
-                </el-form-item>
-                <el-form-item label="结束时间" :label-width="formLabelWidth">
-                    <el-time-picker v-model="form.EndTime" placeholder="选择结束时间" format="HH:mm:ss"
-                        value-format="HH:mm:ss" />
-                </el-form-item>
-                <el-form-item label="影厅" :label-width="formLabelWidth">
-                    <el-input v-model="form.Room" autocomplete="off" />
-                </el-form-item>
-                <!-- <el-form-item label="电影类型" :label-width="formLabelWidth">
+                <el-form-item label="电影类型" :label-width="formLabelWidth">
                     <el-select v-model="form.Type" placeholder="请选择电影类型" multiple>
                         <el-option v-for="item in TypeOptions" :key="item.value" :label="item.label"
                             :value="item.value" />
                     </el-select>
-                </el-form-item> -->
-                <!-- <el-form-item label="演员" :label-width="formLabelWidth">
+                </el-form-item>
+                <el-form-item label="演员" :label-width="formLabelWidth">
                     <el-input v-model="form.Performer" style="width: 240px" />
                 </el-form-item>
                 <el-form-item label="简介" :label-width="formLabelWidth">
                     <el-input v-model="form.Introduce" style="width: 240px" autosize type="textarea" />
-                </el-form-item> -->
+                </el-form-item>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
@@ -85,44 +65,24 @@
         <!-- 编辑电影信息 -->
         <el-dialog v-model="EditDialogFormVisible" title="电影信息编辑" width="500">
             <el-form :model="form">
-                <!-- <el-form-item label="上传海报" :label-width="formLabelWidth">
+                <el-form-item label="上传海报" :label-width="formLabelWidth">
                     <input type="file" @change="handleFileUpload" accept="image/*">
                     <img :src="form.ImageUrl" style="width: 160px;height: 235px;" v-if="form.ImageUrl">
-                </el-form-item> -->
-                <el-form-item label="影城" :label-width="formLabelWidth">
-                    <el-select v-model="form.Cinema" placeholder="请选择影城">
-                        <el-option v-for="item in CinemaOptions" :key="item.value" :label="item.label"
-                            :value="item.value" />
-                    </el-select>
                 </el-form-item>
-                <!-- <el-form-item label="上映地区" :label-width="formLabelWidth">
-                    <el-select v-model="form.Region" placeholder="请选择地区">
+                <el-form-item label="上映地区" :label-width="formLabelWidth">
+                    <el-select v-model="form.Region" placeholder="请选择影城">
                         <el-option v-for="item in RegionOptions" :key="item.value" :label="item.label"
                             :value="item.value" />
                     </el-select>
-                </el-form-item> -->
-                <el-form-item label="电影名称" :label-width="formLabelWidth">
-                    <el-select v-model="form.MovieName" placeholder="请选择电影">
-                        <el-option v-for="item in MovieOptions" :key="item.value" :label="item.label"
-                            :value="item.value" />
-                    </el-select>
                 </el-form-item>
-                <el-form-item label="观看时间" :label-width="formLabelWidth">
+                <el-form-item label="电影名称" :label-width="formLabelWidth">
+                    <el-input v-model="form.MovieName" autocomplete="off" />
+                </el-form-item>
+                <el-form-item label="上映时间" :label-width="formLabelWidth">
                     <el-date-picker v-model="form.ReleaseTime" type="date" placeholder="选择日期" format="YYYY/MM/DD"
                         value-format="YYYY-MM-DD" />
                 </el-form-item>
-                <el-form-item label="开始时间" :label-width="formLabelWidth">
-                    <el-time-picker v-model="form.StartTime" placeholder="选择开始时间" format="HH:mm:ss"
-                        value-format="HH:mm:ss" />
-                </el-form-item>
-                <el-form-item label="结束时间" :label-width="formLabelWidth">
-                    <el-time-picker v-model="form.EndTime" placeholder="选择结束时间" format="HH:mm:ss"
-                        value-format="HH:mm:ss" />
-                </el-form-item>
-                <el-form-item label="影厅" :label-width="formLabelWidth">
-                    <el-input v-model="form.Room" autocomplete="off" />
-                </el-form-item>
-                <!-- <el-form-item label="电影类型" :label-width="formLabelWidth">
+                <el-form-item label="电影类型" :label-width="formLabelWidth">
                     <el-select v-model="form.Type" placeholder="请选择电影类型" multiple>
                         <el-option v-for="item in TypeOptions" :key="item.value" :label="item.label"
                             :value="item.value" />
@@ -133,7 +93,7 @@
                 </el-form-item>
                 <el-form-item label="简介" :label-width="formLabelWidth">
                     <el-input v-model="form.Introduce" style="width: 240px" autosize type="textarea" />
-                </el-form-item> -->
+                </el-form-item>
             </el-form>
             <template #footer>
                 <div class="dialog-footer">
@@ -148,28 +108,31 @@
 </template>
 
 <script>
-import { ElMessageBox, ElMessage } from 'element-plus';
 import axios from 'axios';
+
+import { ElMessageBox, ElMessage } from 'element-plus';
 
 export default {
     data() {
         return {
             fileList: [],//用于存放电影图片
+
             EditDialogFormVisible: false,
             dialogFormVisible: false,
 
             // 表单内容
             form: {
-                Cinema: '',
+                ImageUrl: '',
+                Region: '',
                 MovieName: '',
+                Introduce: '',
+                Performer: '',
                 ReleaseTime: '',
-                StartTime: '',
-                EndTime: '',
-                Room: '',
+                Type: ''
             },
             formLabelWidth: '140px',
 
-            // 影院选项
+            // 影城选项
             CinemaOptions: [
                 { label: "1929嘉莱电影公园(武汉光谷店)", value: "1929嘉莱电影公园(武汉光谷店)" },
                 {
@@ -192,10 +155,7 @@ export default {
                 { label: '韩国', value: '韩国' },
             ],
 
-            // 电影数据选项
-            MovieOptions: [],
-
-            // 电影类型选项
+            // 类型选项
             TypeOptions: [
                 { label: '动作', value: '动作' },
                 { label: '喜剧', value: '喜剧' },
@@ -209,36 +169,10 @@ export default {
             ],
 
             // 表格内容展示
-            tableData: [
-                {
-                    Cinema: '万达影城',
-                    MovieName: '热辣滚烫',
-                    ReleaseTime: '2024-3-30',
-                    StartTime: '20:30:00',
-                    EndTime: '22:30:00',
-                    Room: '1',
-                },
-                {
-                    Cinema: '新世纪影城',
-                    MovieName: '飞驰人生2',
-                    ReleaseTime: '2024-3-30',
-                    StartTime: '20:30:00',
-                    EndTime: '22:30:00',
-                    Room: '1',
-                },
-                {
-                    Cinema: '万达影城',
-                    MovieName: '功夫熊猫4',
-                    ReleaseTime: '2024-3-30',
-                    StartTime: '20:30:00',
-                    EndTime: '22:30:00',
-                    Room: '1',
-                }
-            ]
+            tableData: []
         };
     },
     methods: {
-        // 删除电影排期
         deleteRow(index) {
             this.tableData.splice(index, 1);
         },
@@ -266,57 +200,70 @@ export default {
                     });
                 });
         },
-
-        // 添加电影排期
         onAddItem() {
             this.dialogFormVisible = true;
             this.form = {
                 ImageUrl: '',
-                Cinema: '',
+                Region: '',
                 MovieName: '',
                 Introduce: '',
                 Performer: '',
                 ReleaseTime: '',
-                StartTime: '',
-                EndTime: '',
-                Room: '',
                 Type: ''
             };
         },
+        openEditDialog(row) {
+            // 将选中行的信息复制到表单中
+            this.form = { ...row };
+            // 设置初始的电影类型选择
+            this.form.Type = row.Type.split(','); // 假设电影类型以逗号分隔
+            this.EditDialogFormVisible = true;
+        },
         addMovie() {
-            this.tableData.push({ ...this.form });
-            this.fileList = [];
+            axios({
+                method: 'post',
+                url: 'http://localhost:8080/admin/user/movie/changeMovie',
+                data: {
+                    address: this.form.Region,
+                    movieName: this.form.MovieName,
+                    movieType: this.form.Type,
+                    actors: this.form.Performer,
+                    posterUrl: this.form.ImageUrl,
+                    synopsis: this.form.Introduce,
+                    releaseDate: this.form.ReleaseTime
+                }
+            }).then(response => {
+                console.log(response);
+                ElMessage.success('添加电影成功');
+                this.tableData.push({ ...this.form });
+            }).catch(error => {
+                console.error(error);
+                ElMessage.error('添加电影失败');
+            });
             this.dialogFormVisible = false;
             this.form = {
                 ImageUrl: '',
-                Cinema: '',
+                Region: '',
                 MovieName: '',
                 Introduce: '',
                 Performer: '',
                 ReleaseTime: '',
-                StartTime: '',
-                EndTime: '',
-                Room: '',
                 Type: ''
             };
-            ElMessage.success('添加电影排期成功');
-        },
-        openEditDialog(row) {
-            this.form = { ...row };
-            this.EditDialogFormVisible = true;
         },
         updateMovie() {
             const index = this.tableData.findIndex(item => item.MovieName === this.form.MovieName);
             // 更新电影信息
             if (index !== -1) {
-                this.tableData[index] = { ...this.form };
+                // 更新电影类型
+                this.tableData[index].Type = this.form.Type.join(','); // 将多选结果转换为字符串形式
+                // 其他信息更新略...
                 this.EditDialogFormVisible = false;
                 ElMessage.success('更新电影信息成功');
             } else {
                 ElMessage.error('未找到要更新的电影');
             }
         },
-
         // 添加图片
         handleFileUpload(event) {
             const file = event.target.files[0];
@@ -332,9 +279,15 @@ export default {
         }).then((res) => {
             let Data = res.data.data
             for (let i = 0; i < Data.length; ++i) {
-                this.MovieOptions.push({
-                    value: Data[i].movieName,
-                    label: Data[i].movieName,
+                this.tableData.push({
+                    movieId: Data[i].movieId,
+                    ImageUrl: Data[i].posterUrl,
+                    MovieName: Data[i].movieName,
+                    Region: Data[i].address,
+                    Introduce: Data[i].synopsis,
+                    Performer: Data[i].actors,
+                    ReleaseTime: Data[i].releaseDate,
+                    Type: Data[i].movieType
                 });
             }
         }).catch((err) => {
