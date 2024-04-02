@@ -12,9 +12,6 @@
                     <el-form-item label="订单号" :label-width="formLabelWidth">
                         <el-input disabled v-model="item.OrderID" autocomplete="off" />
                     </el-form-item>
-                    <el-form-item label="购买时间" :label-width="formLabelWidth">
-                        <el-input disabled v-model="item.BuyTime" autocomplete="off" />
-                    </el-form-item>
                     <el-form-item label="电影名称" :label-width="formLabelWidth">
                         <el-input disabled v-model="item.MovieName" autocomplete="off" />
                     </el-form-item>
@@ -24,10 +21,7 @@
                     <el-form-item label="开始时间" :label-width="formLabelWidth">
                         <el-input disabled v-model="item.StartTime" autocomplete="off" />
                     </el-form-item>
-                    <el-form-item label="结束时间" :label-width="formLabelWidth">
-                        <el-input disabled v-model="item.EndTime" autocomplete="off" />
-                    </el-form-item>
-                    <el-form-item label="影厅" :label-width="formLabelWidth">
+                    <el-form-item label="座位" :label-width="formLabelWidth">
                         <el-input disabled v-model="item.Seat" autocomplete="off" />
                     </el-form-item>
                     <el-form-item label="影厅" :label-width="formLabelWidth">
@@ -45,62 +39,41 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     data() {
         return {
-            TicketData: [
-                {
-                    BuyTime: '2024-2-3',
-                    OrderID: 123456789,
-                    MovieName: '功夫熊猫4',
-                    LookTime: '2024-3-23',
-                    StartTime: '14:00:00',
-                    EndTime: '17:00:00',
-                    Room: 3,
-                    Seat: '1排2座',
-                    QR: '/QR.jpg',
-                    Cover: 'https://p0.pipi.cn/mmdb/54ecde9a2ffc7e21f0ecd8bb48ec78326e683.jpg?imageView2/1/w/464/h/644'
-                },
-                {
-                    BuyTime: '2024-2-3',
-                    OrderID: 123456789,
-                    MovieName: '周处除三害',
-                    LookTime: '2024-3-23',
-                    StartTime: '14:00:00',
-                    EndTime: '17:00:00',
-                    Room: 3,
-                    Seat: '1排2座',
-                    QR: '/QR.jpg',
-                    Cover: 'https://p0.pipi.cn/mmdb/54ecdebe80751becd8c9fd799d14608745656.jpg?imageView2/1/w/464/h/644'
-                },
-                {
-                    BuyTime: '2024-2-3',
-                    OrderID: 123456789,
-                    MovieName: '功夫熊猫4',
-                    LookTime: '2024-3-23',
-                    StartTime: '14:00:00',
-                    EndTime: '17:00:00',
-                    Room: 3,
-                    Seat: '1排2座',
-                    QR: '/QR.jpg',
-                    Cover: 'https://p0.pipi.cn/mmdb/54ecde9a2ffc7e21f0ecd8bb48ec78326e683.jpg?imageView2/1/w/464/h/644'
-                },
-                {
-                    BuyTime: '2024-2-3',
-                    OrderID: 123456789,
-                    MovieName: '功夫熊猫4',
-                    LookTime: '2024-3-23',
-                    StartTime: '14:00:00',
-                    EndTime: '17:00:00',
-                    Room: 3,
-                    Seat: '1排2座',
-                    QR: '/QR.jpg',
-                    Cover: 'https://p0.pipi.cn/mmdb/54ecde9a2ffc7e21f0ecd8bb48ec78326e683.jpg?imageView2/1/w/464/h/644'
-                }
-            ],
+            TicketData: [],
             dialogFormVisible: false,
             formLabelWidth: '140px'
         }
+    },
+    mounted() {
+        let userId = localStorage.getItem('userID');
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/admin/user/order/list/' + userId,
+            params: {
+                userId: userId
+            }
+        }).then((res) => {
+            let orderData = res.data.data
+            for (let i = 0; i < orderData.length; ++i) {
+                this.TicketData.push({
+                    OrderID: orderData[i].orderId,
+                    MovieName: orderData[i].movieName,
+                    LookTime: orderData[i].showDate,
+                    StartTime: orderData[i].startTime,
+                    Room: orderData[i].venueAddress,
+                    Seat: orderData[i].seatRow + '排' + orderData[i].seatColumn + '座',
+                    Cover: orderData[i].posterUrl,
+                    QR: '/QR.jpg',
+                })
+            }
+        }).catch((error) => {
+            console.error(error)
+        })
+
     }
 }
 </script>
