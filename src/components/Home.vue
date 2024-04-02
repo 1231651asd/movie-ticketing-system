@@ -32,6 +32,7 @@
 
 <script>
 import axios from 'axios';
+import { ElMessage } from 'element-plus'
 
 export default {
     data() {
@@ -57,14 +58,19 @@ export default {
                 for (let i = 0; i < CinemaData.length; ++i) {
                     cinemaIdArr.push(CinemaData[i].cinemaId)
                 }
-                this.$router.push({ path: '/Cinema', query: { cinemaIdArr: cinemaIdArr, movieId } })
+                localStorage.setItem('movieId', movieId)
+                this.$router.push({ path: '/Cinema', query: { cinemaIdArr: cinemaIdArr } })
             }).catch((err) => {
                 console.error(err)
             })
         },
         loginOut() {
-            localStorage.removeItem('userID')
+            localStorage.clear()
             this.$router.push('/')
+            ElMessage({
+                message: '退出成功',
+                type: 'success',
+            })
         },
         GoUserInfo() {
             this.$router.push('/UserInfo')

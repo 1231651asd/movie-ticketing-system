@@ -12,12 +12,12 @@
 
 <script>
 import axios from 'axios'
-
 export default {
     data() {
         return {
             CinemaData: [],
             movieId: '',
+            active: ''
         }
     },
     methods: {
@@ -35,13 +35,14 @@ export default {
                 for (let i = 0; i < ChooseTimeData.length; ++i) {
                     ChooseTimeDataArr.push(ChooseTimeData[i])
                 }
+                localStorage.setItem('cinemaId', cinemaId)
                 this.$router.push({ path: '/ChooseTime', query: { ChooseTimeDataArr: JSON.stringify(ChooseTimeDataArr) } })
             })
         }
     },
     mounted() {
         const cinemaIdArrString = this.$route.query.cinemaIdArr;
-        this.movieId = this.$route.query.movieId;
+        this.movieId = localStorage.getItem('movieId')
         const cinemaIdArr = []
         for (let i = 0; i < cinemaIdArrString.length; ++i) {
             cinemaIdArr.push(Number(cinemaIdArrString[i]))
@@ -86,6 +87,8 @@ body {
     margin-top: 50px;
     flex-wrap: wrap;
 }
+
+
 
 .cinema {
     display: flex;
