@@ -159,6 +159,7 @@ export default {
         }).then((res) => {
             this.MovieData = res.data.data
             let seatData = res.data.data.seats
+<<<<<<< HEAD
             for (var t in seatData) {
                 for (var i in seatData[t]) {
                     for (let j = 0; j < this.seatData.length; ++j) {
@@ -168,6 +169,12 @@ export default {
                         }
                     }
                 }
+=======
+            console.log(seatData)
+            for (var key in seatData) {
+            for (var key1 in seatData[key])
+            console.log("Property:", key1, "Value:", seatData[key][key1]);
+>>>>>>> c50fe9c6d4e8e96bc3d66a54c6018749529cc4fc
             }
         })
     }
