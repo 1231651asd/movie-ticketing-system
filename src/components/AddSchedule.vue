@@ -8,7 +8,7 @@
             <el-table-column prop="StartTime" label="开始时间" width="180" />
             <el-table-column prop="EndTime" label="结束时间" width="180" />
             <el-table-column prop="Room" label="影厅" width="180" />
-            <el-table-column fixed="right" label="Operations" width="120">
+            <el-table-column fixed="right" label="操作" width="120">
                 <template #default="scope">
                     <el-button link type="primary" size="large" @click.prevent="openEditDialog(scope.row)">
                         编辑
@@ -26,13 +26,13 @@
                 <el-form-item label="影城" :label-width="formLabelWidth">
                     <el-select v-model="form.Cinema" placeholder="请选择影城">
                         <el-option v-for="item in CinemaOptions" :key="item.value" :label="item.label"
-                            :value="item.value" />
+                            :value="item.label" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="电影名称" :label-width="formLabelWidth">
                     <el-select v-model="form.MovieName" placeholder="请选择电影">
                         <el-option v-for="item in MovieOptions" :key="item.value" :label="item.label"
-                            :value="item.value" />
+                            :value="item.label" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="观看时间" :label-width="formLabelWidth">
@@ -48,7 +48,10 @@
                         value-format="HH:mm:ss" />
                 </el-form-item>
                 <el-form-item label="影厅" :label-width="formLabelWidth">
-                    <el-input v-model="form.Room" autocomplete="off" />
+                    <el-select v-model="form.Room" placeholder="请选择影城">
+                        <el-option v-for="item in RoomOptions" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -66,13 +69,13 @@
                 <el-form-item label="影城" :label-width="formLabelWidth">
                     <el-select v-model="form.Cinema" placeholder="请选择影城">
                         <el-option v-for="item in CinemaOptions" :key="item.value" :label="item.label"
-                            :value="item.value" />
+                            :value="item.label" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="电影名称" :label-width="formLabelWidth">
                     <el-select v-model="form.MovieName" placeholder="请选择电影">
                         <el-option v-for="item in MovieOptions" :key="item.value" :label="item.label"
-                            :value="item.value" />
+                            :value="item.label" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="观看时间" :label-width="formLabelWidth">
@@ -88,7 +91,10 @@
                         value-format="HH:mm:ss" />
                 </el-form-item>
                 <el-form-item label="影厅" :label-width="formLabelWidth">
-                    <el-input v-model="form.Room" autocomplete="off" />
+                    <el-select v-model="form.Room" placeholder="请选择影城">
+                        <el-option v-for="item in RoomOptions" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
                 </el-form-item>
             </el-form>
             <template #footer>
@@ -110,7 +116,6 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            fileList: [],//用于存放电影图片
             EditDialogFormVisible: false,
             dialogFormVisible: false,
 
@@ -126,13 +131,7 @@ export default {
             formLabelWidth: '140px',
 
             // 影院选项
-            CinemaOptions: [
-                { label: "1929嘉莱电影公园(武汉光谷店)", value: "1929嘉莱电影公园(武汉光谷店)" },
-                {
-                    label: "CGV影城（凯德西城IMAX店）", value: "CGV影城（凯德西城IMAX店）"
-                },
-                { label: "TLV影城（永旺金桥IMAX店）", value: "TLV影城（永旺金桥IMAX店）" },
-            ],
+            CinemaOptions: [],
 
             // 上映地区选项
             RegionOptions: [
@@ -162,35 +161,22 @@ export default {
                 { label: '动画', value: '动画' },
                 { label: '纪录', value: '纪录' },
                 { label: '惊悚', value: '惊悚' },
+                { label: '犯罪', value: '犯罪' },
+                { label: '悬疑', value: '悬疑' },
+            ],
+
+
+            // 影厅数据选项
+            RoomOptions: [
+                { label: '一号厅', value: '一号厅' },
+                { label: '二号厅', value: '二号厅' },
+                { label: '三号厅', value: '三号厅' },
+                { label: '四号厅', value: '四号厅' },
+                { label: '五号厅', value: '五号厅' },
             ],
 
             // 表格内容展示
-            tableData: [
-                {
-                    Cinema: '万达影城',
-                    MovieName: '热辣滚烫',
-                    ReleaseTime: '2024-3-30',
-                    StartTime: '20:30:00',
-                    EndTime: '22:30:00',
-                    Room: '1',
-                },
-                {
-                    Cinema: '新世纪影城',
-                    MovieName: '飞驰人生2',
-                    ReleaseTime: '2024-3-30',
-                    StartTime: '20:30:00',
-                    EndTime: '22:30:00',
-                    Room: '1',
-                },
-                {
-                    Cinema: '万达影城',
-                    MovieName: '功夫熊猫4',
-                    ReleaseTime: '2024-3-30',
-                    StartTime: '20:30:00',
-                    EndTime: '22:30:00',
-                    Room: '1',
-                }
-            ]
+            tableData: []
         };
     },
     methods: {
@@ -227,38 +213,63 @@ export default {
         onAddItem() {
             this.dialogFormVisible = true;
             this.form = {
-                ImageUrl: '',
                 Cinema: '',
                 MovieName: '',
-                Introduce: '',
-                Performer: '',
                 ReleaseTime: '',
                 StartTime: '',
                 EndTime: '',
                 Room: '',
-                Type: ''
             };
         },
         addMovie() {
+
             this.tableData.push({ ...this.form });
-            this.fileList = [];
+
+            // 根据影城名称查询对应的影城ID
+            const cinema = this.CinemaOptions.find(option => option.label === this.form.Cinema);
+            const cinemaId = cinema ? cinema.value : null;
+
+            // 根据电影名称查询对应的电影ID
+            const movie = this.MovieOptions.find(option => option.label === this.form.MovieName);
+            const movieId = movie ? movie.value : null;
+
+            // 将数据添加到数据库
+            axios({
+                method: 'post',
+                url: 'http://localhost:8080/admin/user/screen/saveScreens',
+                data: {
+                    cinemaId: cinemaId,
+                    movieId: movieId,
+                    screenName: this.form.Room,
+                    showDate: this.form.ReleaseTime,
+                    startTime: this.form.StartTime,
+                    endTime: this.form.EndTime
+                }
+            }).then((res) => {
+                console.log(res)
+            }).catch((error) => {
+                console.error(error)
+            })
+
             this.dialogFormVisible = false;
             this.form = {
-                ImageUrl: '',
                 Cinema: '',
                 MovieName: '',
-                Introduce: '',
-                Performer: '',
                 ReleaseTime: '',
                 StartTime: '',
                 EndTime: '',
                 Room: '',
-                Type: ''
             };
             ElMessage.success('添加电影排期成功');
         },
         openEditDialog(row) {
+            // 将选中行的信息复制到表单中
             this.form = { ...row };
+            // 检查类型属性是否为字符串
+            if (typeof row.Type === 'string') {
+                // 如果是字符串，将其转换为数组
+                this.form.Type = row.Type.split(',');
+            }
             this.EditDialogFormVisible = true;
         },
         updateMovie() {
@@ -282,19 +293,37 @@ export default {
         },
     },
     mounted() {
+
+        // 获取电影选项
         axios({
             method: 'get',
-            url: 'http://localhost:8080/admin/user/movie/list/3'
+            url: 'http://localhost:8080/admin/user/movie/list/all'
         }).then((res) => {
             let Data = res.data.data
             for (let i = 0; i < Data.length; ++i) {
                 this.MovieOptions.push({
-                    value: Data[i].movieName,
+                    value: Data[i].movieId,
                     label: Data[i].movieName,
                 });
             }
         }).catch((err) => {
             console.error(err)
+        })
+
+        // 获取影城选项
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/admin/user/cinema/list'
+        }).then((res) => {
+            let CinemaData = res.data.data
+            for (let i = 0; i < CinemaData.length; ++i) {
+                this.CinemaOptions.push({
+                    value: CinemaData[i].cinemaId,
+                    label: CinemaData[i].cinemaName,
+                });
+            }
+        }).catch((error) => {
+            console.error(error)
         })
     }
 };
