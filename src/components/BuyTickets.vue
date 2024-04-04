@@ -31,15 +31,15 @@ export default {
             imageUrl: '',
             MovieData: {},
             seatData: [
-                { seatNumber: 1, eatRow: 1, seatCol: 1, selected: false, disabled: false },
-                { seatNumber: 2, eatRow: 1, seatCol: 2, selected: false, disabled: false },
-                { seatNumber: 3, eatRow: 1, seatCol: 3, selected: false, disabled: false },
-                { seatNumber: 4, eatRow: 1, seatCol: 4, selected: false, disabled: false },
-                { seatNumber: 5, eatRow: 1, seatCol: 5, selected: false, disabled: false },
-                { seatNumber: 6, eatRow: 1, seatCol: 6, selected: false, disabled: false },
-                { seatNumber: 7, eatRow: 1, seatCol: 7, selected: false, disabled: false },
-                { seatNumber: 8, eatRow: 1, seatCol: 8, selected: false, disabled: false },
-                { seatNumber: 9, eatRow: 1, seatCol: 9, selected: false, disabled: false },
+                { seatNumber: 1, seatRow: 1, seatCol: 1, selected: false, disabled: false },
+                { seatNumber: 2, seatRow: 1, seatCol: 2, selected: false, disabled: false },
+                { seatNumber: 3, seatRow: 1, seatCol: 3, selected: false, disabled: false },
+                { seatNumber: 4, seatRow: 1, seatCol: 4, selected: false, disabled: false },
+                { seatNumber: 5, seatRow: 1, seatCol: 5, selected: false, disabled: false },
+                { seatNumber: 6, seatRow: 1, seatCol: 6, selected: false, disabled: false },
+                { seatNumber: 7, seatRow: 1, seatCol: 7, selected: false, disabled: false },
+                { seatNumber: 8, seatRow: 1, seatCol: 8, selected: false, disabled: false },
+                { seatNumber: 9, seatRow: 1, seatCol: 9, selected: false, disabled: false },
                 { seatNumber: 10, seatRow: 1, seatCol: 10, selected: false, disabled: false },
                 { seatNumber: 11, seatRow: 1, seatCol: 11, selected: false, disabled: false },
                 { seatNumber: 12, seatRow: 1, seatCol: 12, selected: false, disabled: false },
@@ -132,7 +132,9 @@ export default {
                             screenId: this.ShoppingCart[i].screenId
                         }
                     }).then((res) => {
-                        console.log(res)
+                        localStorage.removeItem('movieId')
+                        localStorage.removeItem('cinemaId')
+                        localStorage.removeItem('screenId')
                     }).catch((error) => {
                         console.error(error)
                     })
@@ -159,7 +161,6 @@ export default {
         }).then((res) => {
             this.MovieData = res.data.data
             let seatData = res.data.data.seats
-<<<<<<< HEAD
             for (var t in seatData) {
                 for (var i in seatData[t]) {
                     for (let j = 0; j < this.seatData.length; ++j) {
@@ -169,12 +170,6 @@ export default {
                         }
                     }
                 }
-=======
-            console.log(seatData)
-            for (var key in seatData) {
-            for (var key1 in seatData[key])
-            console.log("Property:", key1, "Value:", seatData[key][key1]);
->>>>>>> c50fe9c6d4e8e96bc3d66a54c6018749529cc4fc
             }
         })
     }

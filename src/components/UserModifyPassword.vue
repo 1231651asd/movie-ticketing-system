@@ -4,11 +4,14 @@
         <el-input v-model="OldPassword" style="width: 240px" type="password" placeholder="请输入旧密码" show-password />
         <p>新密码：</p>
         <el-input v-model="NewPassword" style="width: 240px" type="password" placeholder="请输入新密码" show-password />
-        <button>确认修改</button>
+        <button @click="modifyPassword">确认修改</button>
     </div>
 </template>
 
 <script>
+import axios from 'axios'
+import { ElMessage } from 'element-plus'
+
 export default {
     data() {
         return {
@@ -17,8 +20,42 @@ export default {
         }
     },
     methods: {
+        modifyPassword() {
+            let userId = localStorage.getItem('userID');
 
+            axios({
+                method: 'get',
+                url: 'http://localhost:8080/admin/user/changePassword',
+                params: {
+                    userId: userId,
+                    pwd: this.OldPassword,
+                    pwd1: this.NewPassword
+                }
+            }).then((res) => {
+                console.log(res.data); // 查看服务器响应的数据
+                if (res.data.message === '出现了异常' || res.data.message === '数据异常') {
+                    ElMessage({
+                        message: '修改失败',
+                        type: 'error',
+                    });
+                } else {
+                    ElMessage({
+                        message: '修改成功',
+                        type: 'success',
+                    })
+                }
+
+            }).catch((error) => {
+                console.error(error); // 处理错误
+                ElMessage({
+                    message: '修改失败',
+                    type: 'error',
+                });
+            });
+        }
     }
+
+
 }
 </script>
 
