@@ -79,7 +79,7 @@ export default {
     mounted() {
         axios({
             method: 'get',
-            url: 'http://localhost:8080/admin/user/movie/list/3'
+            url: 'http://localhost:8080/admin/user/movie/list/all'
         }).then((res) => {
             let Data = res.data.data
             for (let i = 0; i < Data.length; ++i) {
