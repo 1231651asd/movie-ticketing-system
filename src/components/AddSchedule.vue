@@ -26,13 +26,13 @@
                 <el-form-item label="影城" :label-width="formLabelWidth">
                     <el-select v-model="form.Cinema" placeholder="请选择影城">
                         <el-option v-for="item in CinemaOptions" :key="item.value" :label="item.label"
-                            :value="item.label" />
+                            :value="item.value" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="电影名称" :label-width="formLabelWidth">
                     <el-select v-model="form.MovieName" placeholder="请选择电影">
                         <el-option v-for="item in MovieOptions" :key="item.value" :label="item.label"
-                            :value="item.label" />
+                            :value="item.value" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="观看时间" :label-width="formLabelWidth">
@@ -48,7 +48,7 @@
                         value-format="HH:mm:ss" />
                 </el-form-item>
                 <el-form-item label="影厅" :label-width="formLabelWidth">
-                    <el-select v-model="form.Room" placeholder="请选择影城">
+                    <el-select v-model="form.Room" placeholder="请选择影厅">
                         <el-option v-for="item in RoomOptions" :key="item.value" :label="item.label"
                             :value="item.value" />
                     </el-select>
@@ -69,13 +69,13 @@
                 <el-form-item label="影城" :label-width="formLabelWidth">
                     <el-select v-model="form.Cinema" placeholder="请选择影城">
                         <el-option v-for="item in CinemaOptions" :key="item.value" :label="item.label"
-                            :value="item.label" />
+                            :value="item.value" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="电影名称" :label-width="formLabelWidth">
                     <el-select v-model="form.MovieName" placeholder="请选择电影">
                         <el-option v-for="item in MovieOptions" :key="item.value" :label="item.label"
-                            :value="item.label" />
+                            :value="item.value" />
                     </el-select>
                 </el-form-item>
                 <el-form-item label="观看时间" :label-width="formLabelWidth">
@@ -91,7 +91,7 @@
                         value-format="HH:mm:ss" />
                 </el-form-item>
                 <el-form-item label="影厅" :label-width="formLabelWidth">
-                    <el-select v-model="form.Room" placeholder="请选择影城">
+                    <el-select v-model="form.Room" placeholder="请选择影厅">
                         <el-option v-for="item in RoomOptions" :key="item.value" :label="item.label"
                             :value="item.value" />
                     </el-select>
@@ -181,8 +181,25 @@ export default {
     },
     methods: {
         // 删除电影排期
+        deleteSchedule(screenId) {
+            axios({
+                method: 'delete',
+                url: `http://localhost:8080/admin/user/screen/saveScreens/${screenId}`,
+            }).then(response => {
+                ElMessage({
+                    type: 'success',
+                    message: '删除成功',
+                });
+            }).catch(error => {
+                console.error(error);
+                ElMessage.error('删除失败'); screenId
+            });
+        },
         deleteRow(index) {
+            const screenIdToDelete = this.tableData[index].ScreenId;
             this.tableData.splice(index, 1);
+            this.deleteSchedule(screenIdToDelete); // 调用删除电影排期的方法
+
         },
         openConfirmDialog(index) {
             ElMessageBox.confirm(
@@ -193,20 +210,14 @@ export default {
                     cancelButtonText: '取消',
                     type: 'warning',
                 }
-            )
-                .then(() => {
-                    this.deleteRow(index);
-                    ElMessage({
-                        type: 'success',
-                        message: '删除成功',
-                    });
-                })
-                .catch(() => {
-                    ElMessage({
-                        type: 'info',
-                        message: '取消删除',
-                    });
+            ).then(() => {
+                this.deleteRow(index);
+            }).catch(() => {
+                ElMessage({
+                    type: 'info',
+                    message: '取消删除',
                 });
+            });
         },
 
         // 添加电影排期
@@ -222,7 +233,6 @@ export default {
             };
         },
         addMovie() {
-
             this.tableData.push({ ...this.form });
 
             // 根据影城名称查询对应的影城ID
@@ -265,24 +275,50 @@ export default {
         openEditDialog(row) {
             // 将选中行的信息复制到表单中
             this.form = { ...row };
-            // 检查类型属性是否为字符串
-            if (typeof row.Type === 'string') {
-                // 如果是字符串，将其转换为数组
-                this.form.Type = row.Type.split(',');
-            }
+            console.log(this.form)
             this.EditDialogFormVisible = true;
         },
         updateMovie() {
-            const index = this.tableData.findIndex(item => item.MovieName === this.form.MovieName);
+            const index = this.tableData.findIndex(item => item.MovieId === this.form.MovieId);
             // 更新电影信息
             if (index !== -1) {
+                // 更新表格中的数据
                 this.tableData[index] = { ...this.form };
+
+                // 根据影城名称查询对应的影城ID
+                const cinema = this.CinemaOptions.find(option => option.label === this.form.Cinema);
+                const cinemaId = cinema ? cinema.value : null;
+
+                // 根据电影名称查询对应的电影ID
+                const movie = this.MovieOptions.find(option => option.label === this.form.MovieName);
+                const movieId = movie ? movie.value : null;
+
+                // 更新数据库中的信息
+                axios({
+                    method: 'put',
+                    url: 'http://localhost:8080/admin/user/screen/changeScreens',
+                    data: {
+                        screenId: this.form.ScreenId,
+                        cinemaId: cinemaId,
+                        screenName: this.form.Room,
+                        movieId: movieId,
+                        showDate: this.form.ReleaseTime,
+                        startTime: this.form.StartTime,
+                        endTime: this.form.EndTime
+                    }
+                }).then(() => {
+                    console.log(this.form)
+                    ElMessage.success('更新电影信息成功');
+
+                }).catch((error) => {
+                    console.error(error)
+                })
                 this.EditDialogFormVisible = false;
-                ElMessage.success('更新电影信息成功');
             } else {
                 ElMessage.error('未找到要更新的电影');
             }
         },
+
 
         // 添加图片
         handleFileUpload(event) {
@@ -325,6 +361,30 @@ export default {
         }).catch((error) => {
             console.error(error)
         })
+
+        // 获取所有排期信息
+        axios({
+            method: 'get',
+            url: 'http://localhost:8080/admin/user/screen/list/all'
+        }).then((res) => {
+            let Data = res.data.data
+            for (let i = 0; i < Data.length; ++i) {
+                this.tableData.push({
+                    ScreenId: Data[i].screenId,
+                    CinemaId: Data[i].cinemaId,
+                    MovieId: Data[i].movieId,
+                    MovieName: Data[i].movieName,
+                    Cinema: Data[i].cinemaName,
+                    ReleaseTime: Data[i].showDate,
+                    StartTime: Data[i].startTime,
+                    EndTime: Data[i].endTime,
+                    Room: Data[i].screenName
+                })
+            }
+        }).catch((error) => {
+            console.error(error)
+        })
+
     }
 };
 </script>

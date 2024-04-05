@@ -294,6 +294,8 @@ export default {
                     }
                 }).then(() => {
                     ElMessage.success('更新电影信息成功');
+                }).catch((error) => {
+                    console.error(error)
                 })
                 this.EditDialogFormVisible = false;
             } else {
