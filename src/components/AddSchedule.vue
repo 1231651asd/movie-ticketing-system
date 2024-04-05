@@ -275,22 +275,24 @@ export default {
         openEditDialog(row) {
             // 将选中行的信息复制到表单中
             this.form = { ...row };
-            console.log(this.form)
             this.EditDialogFormVisible = true;
+            console.log(this.form)
         },
         updateMovie() {
             const index = this.tableData.findIndex(item => item.MovieId === this.form.MovieId);
+
             // 更新电影信息
             if (index !== -1) {
                 // 更新表格中的数据
+                console.log(this.form)
                 this.tableData[index] = { ...this.form };
 
                 // 根据影城名称查询对应的影城ID
-                const cinema = this.CinemaOptions.find(option => option.label === this.form.Cinema);
+                const cinema = this.CinemaOptions.find(option => option.value === this.form.Cinema);
                 const cinemaId = cinema ? cinema.value : null;
 
                 // 根据电影名称查询对应的电影ID
-                const movie = this.MovieOptions.find(option => option.label === this.form.MovieName);
+                const movie = this.MovieOptions.find(option => option.value === this.form.MovieName);
                 const movieId = movie ? movie.value : null;
 
                 // 更新数据库中的信息
@@ -307,7 +309,6 @@ export default {
                         endTime: this.form.EndTime
                     }
                 }).then(() => {
-                    console.log(this.form)
                     ElMessage.success('更新电影信息成功');
 
                 }).catch((error) => {
@@ -384,7 +385,6 @@ export default {
         }).catch((error) => {
             console.error(error)
         })
-
     }
 };
 </script>

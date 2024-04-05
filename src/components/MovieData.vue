@@ -257,7 +257,6 @@ export default {
                 }
             }).then(response => {
                 ElMessage.success('添加电影成功');
-                console.log(this.form)
                 this.tableData.push({ ...this.form });
             }).catch(error => {
                 console.error(error);
