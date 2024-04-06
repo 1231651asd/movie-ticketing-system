@@ -243,6 +243,18 @@ export default {
 
         //添加电影信息
         addMovie() {
+            if (
+                !this.form.ImageUrl ||
+                !this.form.Region ||
+                !this.form.MovieName ||
+                !this.form.Introduce ||
+                !this.form.Performer ||
+                !this.form.ReleaseTime ||
+                !this.form.Type
+            ) {
+                ElMessage.error('请填写完整的电影信息');
+                return;
+            }
             axios({
                 method: 'post',
                 url: 'http://localhost:8080/admin/user/movie/addMovie',

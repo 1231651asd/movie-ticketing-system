@@ -220,6 +220,34 @@ export default {
             });
         },
 
+        // 判断是否有空数据
+        validateFormData() {
+            if (!this.form.Cinema) {
+                ElMessage.error('请选择影城');
+                return false;
+            }
+            if (!this.form.MovieName) {
+                ElMessage.error('请选择电影');
+                return false;
+            }
+            if (!this.form.ReleaseTime) {
+                ElMessage.error('请选择观看时间');
+                return false;
+            }
+            if (!this.form.StartTime) {
+                ElMessage.error('请选择开始时间');
+                return false;
+            }
+            if (!this.form.EndTime) {
+                ElMessage.error('请选择结束时间');
+                return false;
+            }
+            if (!this.form.Room) {
+                ElMessage.error('请选择影厅');
+                return false;
+            }
+            return true;
+        },
         // 添加电影排期
         onAddItem() {
             this.dialogFormVisible = true;
@@ -233,6 +261,12 @@ export default {
             };
         },
         addMovieSchedule() {
+
+            if (!this.validateFormData()) {
+                return;
+            }
+
+
             // 根据影城名称查询对应的影城ID
             const cinema = this.CinemaOptions.find(option => option.value === this.form.Cinema);
             const cinemaId = cinema ? cinema.value : null;
