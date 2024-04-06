@@ -57,7 +57,7 @@
             <template #footer>
                 <div class="dialog-footer">
                     <el-button @click="dialogFormVisible = false">取消</el-button>
-                    <el-button type="primary" @click="addMovie">
+                    <el-button type="primary" @click="addMovieSchedule">
                         确认
                     </el-button>
                 </div>
@@ -232,16 +232,31 @@ export default {
                 Room: '',
             };
         },
-        addMovie() {
-            this.tableData.push({ ...this.form });
-
+        addMovieSchedule() {
             // 根据影城名称查询对应的影城ID
-            const cinema = this.CinemaOptions.find(option => option.label === this.form.Cinema);
+            const cinema = this.CinemaOptions.find(option => option.value === this.form.Cinema);
             const cinemaId = cinema ? cinema.value : null;
 
             // 根据电影名称查询对应的电影ID
-            const movie = this.MovieOptions.find(option => option.label === this.form.MovieName);
+            const movie = this.MovieOptions.find(option => option.value === this.form.MovieName);
             const movieId = movie ? movie.value : null;
+            // 检查影城ID和电影ID的有效性
+            if (!cinemaId) {
+                ElMessage.error('请选择有效的影城');
+                return;
+            }
+
+            if (!movieId) {
+                ElMessage.error('请选择有效的电影');
+                return;
+            }
+
+            // 将数据添加到表格中
+            this.tableData.push({
+                ...this.form,
+                Cinema: cinema.label, // 替换为影城名称的label
+                MovieName: movie.label // 替换为电影名称的label
+            });
 
             // 将数据添加到数据库
             axios({
@@ -256,10 +271,12 @@ export default {
                     endTime: this.form.EndTime
                 }
             }).then((res) => {
-                console.log(res)
+                console.log(res);
+                ElMessage.success('添加电影排期成功');
             }).catch((error) => {
-                console.error(error)
-            })
+                console.error(error);
+                ElMessage.error('添加电影排期失败');
+            });
 
             this.dialogFormVisible = false;
             this.form = {
@@ -270,13 +287,12 @@ export default {
                 EndTime: '',
                 Room: '',
             };
-            ElMessage.success('添加电影排期成功');
         },
+
         openEditDialog(row) {
             // 将选中行的信息复制到表单中
             this.form = { ...row };
             this.EditDialogFormVisible = true;
-            console.log(this.form)
         },
         updateMovie() {
             const index = this.tableData.findIndex(item => item.MovieId === this.form.MovieId);
@@ -284,16 +300,19 @@ export default {
             // 更新电影信息
             if (index !== -1) {
                 // 更新表格中的数据
-                console.log(this.form)
                 this.tableData[index] = { ...this.form };
 
                 // 根据影城名称查询对应的影城ID
                 const cinema = this.CinemaOptions.find(option => option.value === this.form.Cinema);
-                const cinemaId = cinema ? cinema.value : null;
+                const cinemaLabel = cinema ? cinema.label : '';
 
                 // 根据电影名称查询对应的电影ID
                 const movie = this.MovieOptions.find(option => option.value === this.form.MovieName);
-                const movieId = movie ? movie.value : null;
+                const movieLabel = movie ? movie.label : '';
+
+                // 更新表格中的影城和电影名称为label
+                this.tableData[index].Cinema = cinemaLabel;
+                this.tableData[index].MovieName = movieLabel;
 
                 // 更新数据库中的信息
                 axios({
@@ -301,9 +320,9 @@ export default {
                     url: 'http://localhost:8080/admin/user/screen/changeScreens',
                     data: {
                         screenId: this.form.ScreenId,
-                        cinemaId: cinemaId,
+                        cinemaId: this.form.Cinema,
                         screenName: this.form.Room,
-                        movieId: movieId,
+                        movieId: this.form.MovieName,
                         showDate: this.form.ReleaseTime,
                         startTime: this.form.StartTime,
                         endTime: this.form.EndTime
@@ -319,6 +338,8 @@ export default {
                 ElMessage.error('未找到要更新的电影');
             }
         },
+
+
 
 
         // 添加图片
