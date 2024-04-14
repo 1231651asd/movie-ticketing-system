@@ -267,29 +267,25 @@ export default {
                     synopsis: this.form.Introduce,
                     releaseDate: this.form.ReleaseTime
                 }
-            }).then(response => {
-                ElMessage.success('添加电影成功');
-                this.tableData.push({ ...this.form });
+            }).then((res) => {
+                if (res.data.message === '电影名重复') {
+                    ElMessage.error('已有相关电影信息');
+
+                } else {
+                    ElMessage.success('添加电影成功');
+                    this.tableData.push({ ...this.form });
+                    this.dialogFormVisible = false;
+                }
             }).catch(error => {
                 console.error(error);
                 ElMessage.error('添加电影失败');
             });
-            this.dialogFormVisible = false;
         },
         updateMovie() {
             const index = this.tableData.findIndex(item => item.movieId === this.form.movieId);
-            // 更新电影信息
+            // 检查电影是否存在于当前表格中
             if (index !== -1) {
-                // 更新电影表格
-                this.tableData[index].Type = this.form.Type
-                this.tableData[index].ImageUrl = this.form.ImageUrl
-                this.tableData[index].Region = this.form.Region
-                this.tableData[index].MovieName = this.form.MovieName
-                this.tableData[index].Introduce = this.form.Introduce
-                this.tableData[index].Performer = this.form.Performer
-                this.tableData[index].ReleaseTime = this.form.ReleaseTime
-
-                // 更新数据库中的数据
+                // 发送更新请求到服务器
                 axios({
                     method: 'put',
                     url: 'http://localhost:8080/admin/user/movie/changeMovie',
@@ -303,16 +299,30 @@ export default {
                         synopsis: this.form.Introduce,
                         releaseDate: this.form.ReleaseTime
                     }
-                }).then(() => {
-                    ElMessage.success('更新电影信息成功');
+                }).then((res) => {
+                    if (res.data.message === '电影名重复') {
+                        ElMessage.error('已有相关电影信息');
+                    } else {
+                        this.tableData[index].Type = this.form.Type;
+                        this.tableData[index].ImageUrl = this.form.ImageUrl;
+                        this.tableData[index].Region = this.form.Region;
+                        this.tableData[index].MovieName = this.form.MovieName;
+                        this.tableData[index].Introduce = this.form.Introduce;
+                        this.tableData[index].Performer = this.form.Performer;
+                        this.tableData[index].ReleaseTime = this.form.ReleaseTime;
+
+                        ElMessage.success('更新电影信息成功');
+                        this.EditDialogFormVisible = false;
+                    }
                 }).catch((error) => {
-                    console.error(error)
-                })
-                this.EditDialogFormVisible = false;
+                    console.error(error);
+                    ElMessage.error('更新电影信息失败');
+                });
             } else {
                 ElMessage.error('未找到要更新的电影');
             }
         },
+
         // 添加图片
         handleFileUpload(event) {
             const file = event.target.files[0];
