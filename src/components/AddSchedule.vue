@@ -261,12 +261,9 @@ export default {
             };
         },
         addMovieSchedule() {
-
             if (!this.validateFormData()) {
                 return;
             }
-
-
             // 根据影城名称查询对应的影城ID
             const cinema = this.CinemaOptions.find(option => option.value === this.form.Cinema);
             const cinemaId = cinema ? cinema.value : null;

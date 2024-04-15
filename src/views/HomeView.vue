@@ -11,7 +11,7 @@
             </div>
 
             <div class="input-container ic2">
-                <input v-model="password" type="text" class="input" id="password">
+                <input v-model="password" type="password" class="input" id="password">
                 <div class="cut"></div>
                 <label class="iLabel" :class="{ 'active': password !== '' }" for="password">密码</label>
             </div>
