@@ -282,12 +282,7 @@ export default {
                 return;
             }
 
-            // 将数据添加到表格中
-            this.tableData.push({
-                ...this.form,
-                Cinema: cinema.label, // 替换为影城名称的label
-                MovieName: movie.label // 替换为电影名称的label
-            });
+
 
             // 将数据添加到数据库
             axios({
@@ -302,22 +297,34 @@ export default {
                     endTime: this.form.EndTime
                 }
             }).then((res) => {
-                console.log(res);
-                ElMessage.success('添加电影排期成功');
+                console.log(res.data.message);
+                if (res.data.message === '该影厅同一时间段存在多部电影') {
+                    ElMessage.error('该影厅同一时间段存在多部电影');
+                } else {
+                    // 将数据添加到表格中
+                    this.tableData.push({
+                        ...this.form,
+                        Cinema: cinema.label, // 替换为影城名称的label
+                        MovieName: movie.label // 替换为电影名称的label
+                    });
+                    ElMessage.success('添加电影排期成功');
+
+                    this.dialogFormVisible = false;
+                    this.form = {
+                        Cinema: '',
+                        MovieName: '',
+                        ReleaseTime: '',
+                        StartTime: '',
+                        EndTime: '',
+                        Room: '',
+                    };
+                }
             }).catch((error) => {
                 console.error(error);
                 ElMessage.error('添加电影排期失败');
             });
 
-            this.dialogFormVisible = false;
-            this.form = {
-                Cinema: '',
-                MovieName: '',
-                ReleaseTime: '',
-                StartTime: '',
-                EndTime: '',
-                Room: '',
-            };
+
         },
 
         openEditDialog(row) {
@@ -369,10 +376,6 @@ export default {
                 ElMessage.error('未找到要更新的电影');
             }
         },
-
-
-
-
         // 添加图片
         handleFileUpload(event) {
             const file = event.target.files[0];
