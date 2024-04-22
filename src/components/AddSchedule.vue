@@ -281,9 +281,6 @@ export default {
                 ElMessage.error('请选择有效的电影');
                 return;
             }
-
-
-
             // 将数据添加到数据库
             axios({
                 method: 'post',
@@ -297,7 +294,6 @@ export default {
                     endTime: this.form.EndTime
                 }
             }).then((res) => {
-                console.log(res.data.message);
                 if (res.data.message === '该影厅同一时间段存在多部电影') {
                     ElMessage.error('该影厅同一时间段存在多部电影');
                 } else {
@@ -308,7 +304,6 @@ export default {
                         MovieName: movie.label // 替换为电影名称的label
                     });
                     ElMessage.success('添加电影排期成功');
-
                     this.dialogFormVisible = false;
                     this.form = {
                         Cinema: '',
@@ -337,9 +332,6 @@ export default {
 
             // 更新电影信息
             if (index !== -1) {
-                // 更新表格中的数据
-                this.tableData[index] = { ...this.form };
-
                 // 根据影城名称查询对应的影城ID
                 const cinema = this.CinemaOptions.find(option => option.value === this.form.Cinema);
                 const cinemaLabel = cinema ? cinema.label : '';
@@ -347,10 +339,6 @@ export default {
                 // 根据电影名称查询对应的电影ID
                 const movie = this.MovieOptions.find(option => option.value === this.form.MovieName);
                 const movieLabel = movie ? movie.label : '';
-
-                // 更新表格中的影城和电影名称为label
-                this.tableData[index].Cinema = cinemaLabel;
-                this.tableData[index].MovieName = movieLabel;
 
                 // 更新数据库中的信息
                 axios({
@@ -365,13 +353,28 @@ export default {
                         startTime: this.form.StartTime,
                         endTime: this.form.EndTime
                     }
-                }).then(() => {
-                    ElMessage.success('更新电影信息成功');
+                }).then((res) => {
+                    console.log(res.data)
+                    if (res.data.code === 4399) {
+                        ElMessage.error(res.data.message);
+                        return;
+                    } else if (res.data.code === 201) {
+                        ElMessage.error(res.data.message);
 
+                    } else {
+                        // 更新表格中的数据
+                        this.tableData[index] = { ...this.form };
+
+                        // 更新表格中的影城和电影名称为label
+                        this.tableData[index].Cinema = cinemaLabel;
+                        this.tableData[index].MovieName = movieLabel;
+
+                        ElMessage.success('更新电影信息成功');
+                        this.EditDialogFormVisible = false;
+                    }
                 }).catch((error) => {
-                    console.error(error)
-                })
-                this.EditDialogFormVisible = false;
+                    console.error(error);
+                });
             } else {
                 ElMessage.error('未找到要更新的电影');
             }
@@ -385,7 +388,6 @@ export default {
         },
     },
     mounted() {
-
         // 获取电影选项
         axios({
             method: 'get',
